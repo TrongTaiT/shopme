@@ -105,9 +105,10 @@
                         </td>
 
                         <td>
-                            <a href="" class="fa-solid fa-pen-to-square icon-green"></a>
+                            <a th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"
+                            class="fa-solid fa-pen-to-square fa-2x icon-green"></a>
                             &nbsp;
-                            <a href="" class="fa-solid fa-trash-can icon-dark"></a>
+                            <a href="" class="fa-solid fa-trash-can fa-2x icon-dark"></a>
                         </td>
                     </tr>
                 </tbody>
