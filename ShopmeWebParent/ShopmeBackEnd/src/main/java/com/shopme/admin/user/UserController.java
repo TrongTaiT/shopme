@@ -56,16 +56,30 @@ public class UserController {
 		try {
 			User user = service.get(id);
 			List<Role> listRoles = service.listRoles();
-			
+
 			model.addAttribute("user", user);
 			model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
 			model.addAttribute("listRoles", listRoles);
-			
+
 			return "user_form";
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 			return "redirect:/users";
 		}
+	}
+
+	@GetMapping("/users/delete/{id}")
+	public String deleteUser( //
+			@PathVariable(name = "id") Integer id, //
+			RedirectAttributes redirectAttributes) {
+		try {
+			service.delete(id);
+			redirectAttributes.addFlashAttribute("message", 
+					"The user ID " + id + " has been deleted successfully");
+		} catch (UserNotFoundException e) {
+			redirectAttributes.addFlashAttribute("message", e.getMessage());
+		}
+		return "redirect:/users";
 	}
 
 }

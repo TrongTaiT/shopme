@@ -32,10 +32,10 @@ public class UserService {
 
 	public void save(User user) {
 		boolean isUpdatingUser = (user.getId() != null);
-		
+
 		if (isUpdatingUser) {
 			User existingUser = userRepo.findById(user.getId()).get();
-			
+
 			if (user.getPassword().isEmpty()) {
 				user.setPassword(existingUser.getPassword());
 			} else {
@@ -44,7 +44,7 @@ public class UserService {
 		} else {
 			encodePassword(user);
 		}
-		
+
 		userRepo.save(user);
 	}
 
@@ -89,6 +89,15 @@ public class UserService {
 		} catch (NoSuchElementException e) {
 			throw new UserNotFoundException("Could not find any user with ID " + id);
 		}
+	}
+
+	public void delete(Integer id) throws UserNotFoundException {
+		Long countById = userRepo.countById(id);
+		if (countById == null || countById == 0) {
+			throw new UserNotFoundException("Could not find any user with ID " + id);
+		}
+		
+		userRepo.deleteById(id);
 	}
 
 }
