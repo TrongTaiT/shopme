@@ -37,8 +37,7 @@ public class UserController {
 			Model model, //
 			@Param("sortField") String sortField, //
 			@Param("sortDir") String sortDir, //
-			@Param("keyword") String keyword)
-	{
+			@Param("keyword") String keyword) {
 		Page<User> page = service.listByPage(pageNum, sortField, sortDir, keyword);
 		List<User> listUsers = page.getContent();
 
@@ -99,7 +98,13 @@ public class UserController {
 		}
 
 		redirectAttributes.addFlashAttribute("message", "User saved successfully");
-		return "redirect:/users";
+
+		return getRedirectURLtoAffectedUser(user);
+	}
+
+	private String getRedirectURLtoAffectedUser(User user) {
+		// String firstPartOfEmail = user.getEmail().split("@")[0];
+		return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword=" + user.getEmail();
 	}
 
 	@GetMapping("/users/edit/{id}")
