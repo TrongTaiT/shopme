@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    <li th:fragment="nav_item(href, label)" class="nav-item">
+        <a th:href="@{${href}}" class="nav-link">[[${label}]]</a>
+    </li>
+
     <th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}"> 
         <a class="text-white" 
             th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName}

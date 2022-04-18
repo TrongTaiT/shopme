@@ -28,39 +28,17 @@
 
                 <div class="collapse navbar-collapse" id="topNavbar">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a th:href="@{/users}" class="nav-link">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/categories}" class="nav-link">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/brands}" class="nav-link">Brands</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/products}" class="nav-link">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/customers}" class="nav-link">Customers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/shipping}" class="nav-link">Shipping</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/orders}" class="nav-link">Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/report}" class="nav-link">Sales Report</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/articles}" class="nav-link">Articles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/menus}" class="nav-link">Menus</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/settings}" class="nav-link">Settings</a>
-                        </li>
+                        <li th:replace="fragments :: nav_item('/users', 'Users')"></li>
+                        <li th:replace="fragments :: nav_item('/categories', 'Categories')"></li>
+                        <li th:replace="fragments :: nav_item('/brands', 'Brands')"></li>
+                        <li th:replace="fragments :: nav_item('/products', 'Products')"></li>
+                        <li th:replace="fragments :: nav_item('/customers', 'Customers')"></li>
+                        <li th:replace="fragments :: nav_item('/shipping', 'Shipping')"></li>
+                        <li th:replace="fragments :: nav_item('/orders', 'Orders')"></li>
+                        <li th:replace="fragments :: nav_item('/report', 'Sales Report')"></li>
+                        <li th:replace="fragments :: nav_item('/articles', 'Articles')"></li>
+                        <li th:replace="fragments :: nav_item('/menus', 'Menus')"></li>
+                        <li th:replace="fragments :: nav_item('/settings', 'Settings')"></li>
                     </ul>
                 </div>
             </nav>
