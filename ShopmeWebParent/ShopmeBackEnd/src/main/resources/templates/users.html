@@ -1,48 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www:thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/fontawesome/all.css}">
-    <link rel="stylesheet" th:href="@{/style.css}">
-    <script th:src="@{/webjars/jquery/3.4.1/dist/jquery.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-    <title>Home - Shopme Admin</title>
-</head>
+<head th:replace="fragments :: page_head('Users - Shopme Admin')"></head>
 
 <body>
     <div class="container-fluid">
-        <div>
-            <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-                <a th:href="@{/}" class="navbar-brand">
-                    <img th:src="@{/images/ShopmeAdminSmall.png}" alt="">
-                </a>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="topNavbar">
-                    <ul class="navbar-nav">
-                        <li th:replace="fragments :: nav_item('/users', 'Users')"></li>
-                        <li th:replace="fragments :: nav_item('/categories', 'Categories')"></li>
-                        <li th:replace="fragments :: nav_item('/brands', 'Brands')"></li>
-                        <li th:replace="fragments :: nav_item('/products', 'Products')"></li>
-                        <li th:replace="fragments :: nav_item('/customers', 'Customers')"></li>
-                        <li th:replace="fragments :: nav_item('/shipping', 'Shipping')"></li>
-                        <li th:replace="fragments :: nav_item('/orders', 'Orders')"></li>
-                        <li th:replace="fragments :: nav_item('/report', 'Sales Report')"></li>
-                        <li th:replace="fragments :: nav_item('/articles', 'Articles')"></li>
-                        <li th:replace="fragments :: nav_item('/menus', 'Menus')"></li>
-                        <li th:replace="fragments :: nav_item('/settings', 'Settings')"></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
+        <div th:replace="navigation :: menu"></div>
 
         <div>
             <h2>Manage Users</h2>
@@ -179,9 +142,7 @@
             </ul>
         </nav>
 
-        <div class="text-center">
-            <p>Shopme Control Panel - Copyright &copy; Shopme</p>
-        </div>
+        <div th:replace="fragments :: footer"></div>
 
         <div class="modal fade text-center" id="confirmModal">
             <div class="modal-dialog">
