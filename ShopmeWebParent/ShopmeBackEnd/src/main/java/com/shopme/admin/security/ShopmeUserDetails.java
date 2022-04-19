@@ -61,7 +61,11 @@ public class ShopmeUserDetails implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return user.isEnabled();
+		return this.user.isEnabled();
+	}
+	
+	public String getFullname() {
+		return this.user.getFullName();
 	}
 
 }
