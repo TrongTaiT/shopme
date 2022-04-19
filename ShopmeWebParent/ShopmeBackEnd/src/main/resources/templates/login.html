@@ -35,6 +35,11 @@
                     <input type="password" name="password" class="form-control" placeholder="Password" required>
                 </p>
                 <p>
+                    <!-- Must be name="remember-me" to be recognized by Spring Security -->
+                    <input type="checkbox" name="remember-me" id="remember">
+                    <label for="remember">Remember Me</label>
+                </p>
+                <p>
                     <input type="submit" value="login" class="btn btn-primary">
                 </p>
             </div>
