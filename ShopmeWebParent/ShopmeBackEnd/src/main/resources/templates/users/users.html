@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www:thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="fragments :: page_head('Users - Shopme Admin')"></head>
 
@@ -60,9 +60,7 @@
                     <tr th:each="user : ${listUsers}">
                         <td class="hideable-column">[[${user.id}]]</td>
                         <td>
-                            <i th:if="${user.photos == null}" class="fa-solid fa-image-portrait fa-3x icon-silver"></i>
-                            <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}"
-                                style="width: 100px;" alt="User's photo">
+                            <div th:replace="fragments :: user_photos"></div>
                         </td>
                         <td class="hideable-column">[[${user.email}]]</td>
                         <td>[[${user.firstName}]]</td>
@@ -70,18 +68,11 @@
                         <td>[[${user.roles}]]</td>
 
                         <td>
-                            <a th:if="${user.enabled == true}" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-                                title="Disable this user" class="fa-solid fa-circle-check fa-2x icon-green"></a>
-                            <a th:if="${user.enabled == false}" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-                                title="Enable this user" class="fa-solid fa-circle fa-2x icon-dark"></a>
+                            <div th:replace="fragments :: user_status" />
                         </td>
-
+                        
                         <td>
-                            <a th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"
-                                class="fa-solid fa-pen-to-square fa-2x icon-green"></a>
-                            &nbsp;
-                            <a th:href="@{'/users/delete/' + ${user.id}}" th:userId="${user.id}"
-                                class="fa-solid fa-trash-can fa-2x icon-dark link-delete" title="Delete this user"></a>
+                            <div th:replace="fragments :: user_actions" />
                         </td>
                     </tr>
                 </tbody>
@@ -91,24 +82,15 @@
         <div class="less-details">
             <div th:each="user : ${listUsers}" class="row my-3">
                 <div class="col-4">
-                    <i th:if="${user.photos == null}" class="fa-solid fa-image-portrait fa-3x icon-silver"></i>
-                    <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}" style="width: 100px;"
-                        alt="User's photo">
+                    <div th:replace="fragments :: user_photos"></div>
                 </div>
                 <div class="col-8">
                     <div>[[${user.fullName}]]</div>
                     <div>[[${user.roles}]]</div>
                     <div class="mt-2">
-                        <a th:if="${user.enabled == true}" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-                            title="Disable this user" class="fa-solid fa-circle-check fa-2x icon-green"></a>
-                        <a th:if="${user.enabled == false}" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-                            title="Enable this user" class="fa-solid fa-circle fa-2x icon-dark"></a>
+                        <div th:replace="fragments :: user_status"></div>
                         &nbsp;
-                        <a th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"
-                            class="fa-solid fa-pen-to-square fa-2x icon-green"></a>
-                        &nbsp;
-                        <a th:href="@{'/users/delete/' + ${user.id}}" th:userId="${user.id}"
-                            class="fa-solid fa-trash-can fa-2x icon-dark link-delete" title="Delete this user"></a>
+                        <div th:replace="fragments :: user_actions"></div>
                     </div>
                 </div>
             </div>
