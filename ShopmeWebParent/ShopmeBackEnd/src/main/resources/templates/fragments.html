@@ -70,8 +70,8 @@
 	</div>
 
     <a th:fragment="category_status" th:href="@{'/categories/' + ${cat.id} + '/enabled/' + ${cat.enabled}}"
-        th:title="@{${cat.enabled == true ? 'Disable' : 'Enabled'} + ' this category'}" 
-        th:class="@{'fa-solid fa-circle-check fa-2x '+ ${cat.enabled == true ? 'icon-dark' : 'icon-green'}}">
+        th:title="@{${cat.enabled == true ? 'Disable' : 'Enable'} + ' this category'}" 
+        th:class="@{'fa-solid fa-circle-check fa-2x '+ ${cat.enabled == true ? 'icon-green' : 'icon-dark'}}">
     </a>
 
     <div th:fragment="category_actions" th:remove="tag">
