@@ -93,16 +93,24 @@ public class Category {
 		this.parent = parent;
 	}
 
+	public Category(Integer id, String name, String alias) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.alias = alias;
+	}
+
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name  + "]";
+		return "Category [id=" + id + ", name=" + name + "]";
 	}
 
 	// getters && setters
 	@Transient
 	public String getImagePath() {
-		if (this.id == null) return "/images/image-thumbnail.png";
-		
+		if (this.id == null)
+			return "/images/image-thumbnail.png";
+
 		return "/category-images/" + this.id + "/" + this.image;
 	}
 
