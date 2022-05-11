@@ -93,9 +93,16 @@ public class Category {
 		this.parent = parent;
 	}
 
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name  + "]";
+	}
+
 	// getters && setters
 	@Transient
 	public String getImagePath() {
+		if (this.id == null) return "/images/image-thumbnail.png";
+		
 		return "/category-images/" + this.id + "/" + this.image;
 	}
 
