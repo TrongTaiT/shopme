@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import com.shopme.common.entity.Category;
@@ -60,9 +61,9 @@ public class CategoryRepositoryTest {
 		for (Category category : categories) {
 			if (category.getParent() == null) {
 				System.out.println(category.getName());
-				
+
 				Set<Category> children = category.getChildren();
-				
+
 				for (Category subCategory : children) {
 					System.out.println("--" + subCategory.getName());
 					printChildren(subCategory, 1);
@@ -70,41 +71,41 @@ public class CategoryRepositoryTest {
 			}
 		}
 	}
-	
+
 	private void printChildren(Category parent, int subLevel) {
 		int newSubLevel = subLevel + 1;
 		Set<Category> children = parent.getChildren();
-		
+
 		for (Category subCategory : children) {
 			for (int i = 0; i < newSubLevel; i++) {
 				System.out.print("--");
 			}
 			System.out.println(subCategory.getName());
-			
+
 			printChildren(subCategory, newSubLevel);
 		}
 	}
-	
+
 	@Test
 	public void testListRootCategories() {
-		List<Category> rootCategories = repo.findRootCategories();
+		List<Category> rootCategories = repo.findRootCategories(Sort.by("name").ascending());
 		rootCategories.forEach(cat -> System.out.println(cat.getName()));
 	}
-	
+
 	@Test
 	public void testFindByName() {
 		String name = "Computers";
 		Category category = repo.findByName(name);
-		
+
 		assertThat(category).isNotNull();
 		assertThat(category.getName()).isEqualTo(name);
 	}
-	
+
 	@Test
 	public void testFindByAlias() {
 		String alias = "some";
 		Category category = repo.findByAlias(alias);
-		
+
 		assertThat(category).isNotNull();
 		assertThat(category.getAlias()).isEqualTo(alias);
 	}
