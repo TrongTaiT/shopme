@@ -13,9 +13,11 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 
 	@Query("Select c FROM Category c WHERE c.parent.id is NULL")
 	public List<Category> findRootCategories(Sort sort);
-	
+
+	public Long countById(Integer id);
+
 	public Category findByName(String name);
-	
+
 	public Category findByAlias(String alias);
 
 	@Query("UPDATE Category c SET c.enabled = ?2 WHERE c.id = ?1")
