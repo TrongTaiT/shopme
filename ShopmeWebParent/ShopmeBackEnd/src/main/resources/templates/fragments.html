@@ -68,11 +68,18 @@
 			th:userId="${user.id}"
 			title="Delete this user"></a>	
 	</div>
-
-    <a th:fragment="category_status" th:href="@{'/categories/' + ${cat.id} + '/enabled/' + ${cat.enabled}}"
-        th:title="@{${cat.enabled == true ? 'Disable' : 'Enable'} + ' this category'}" 
-        th:class="@{'fa-solid fa-2x '+ ${cat.enabled == true ? 'fa-circle-check icon-green' : 'fa-circle icon-dark'}}">
-    </a>
+    
+    <div th:fragment="category_status" th:remove="tag">
+		<a th:if="${cat.enabled == true}" class="fas fa-check-circle fa-2x icon-green" 
+			th:href="@{'/categories/' + ${cat.id} + '/enabled/false'}"
+			title="Disable this category"
+			></a>
+			
+		<a th:if="${cat.enabled == false}" class="fas fa-circle fa-2x icon-dark" 
+			th:href="@{'/categories/' + ${cat.id} + '/enabled/true'}"
+			title="Enable this category"
+			></a>	
+	</div>
 
     <div th:fragment="category_actions" th:remove="tag">
 		<a class="fas fa-edit fa-2x icon-green" th:href="@{'/categories/edit/' + ${cat.id}}"

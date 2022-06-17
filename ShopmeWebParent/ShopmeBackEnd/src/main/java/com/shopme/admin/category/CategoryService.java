@@ -11,10 +11,12 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shopme.common.entity.Category;
 
 @Service
+@Transactional
 public class CategoryService {
 
 	@Autowired
@@ -146,7 +148,7 @@ public class CategoryService {
 
 		return "OK";
 	}
-	
+
 	private SortedSet<Category> sortSubCategories(Set<Category> children) {
 		return sortSubCategories(children, "asc");
 	}
@@ -160,11 +162,15 @@ public class CategoryService {
 				} else {
 					return cat2.getName().compareTo(cat1.getName());
 				}
-				
+
 			}
 		});
 
 		sortedChildren.addAll(children);
 		return sortedChildren;
+	}
+
+	public void updateCategoryEnabledStatus(Integer id, Boolean enabled) {
+		repo.updateEnabledStatus(id, enabled);
 	}
 }
