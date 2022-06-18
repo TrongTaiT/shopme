@@ -11,8 +11,7 @@
             <h2>Manage Brands | [[${pageTitle}]]</h2>
         </div>
 
-        <form th:action="@{/brands/save}" method="post" class="mx-auto" style="max-width: 700px;"
-            th:object="${brand}"
+        <form th:action="@{/brands/save}" method="post" class="mx-auto" style="max-width: 700px;" th:object="${brand}"
             onsubmit="return checkNameUnique(this);">
             <input type="hidden" th:field="*{id}">
             <div class="border border-secondary rounded p-3">
@@ -37,9 +36,10 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Select one or more categories by holding Ctrl button then click:</label>
+                    <label class="col-sm-4 col-form-label">Select one or more categories:</label>
                     <div class="col-sm-8">
-                        <select th:field="*{categories}" multiple required class="form-control" style="resize: vertical; height: 200px">
+                        <select th:field="*{categories}" multiple required class="form-control"
+                            style="resize: vertical; height: 200px">
                             <option value="0">[No Parent]</option>
 
                             <th:block th:each="cat : ${listCategories}">
@@ -52,6 +52,9 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Chosen categories:</label>
                     <div class="col-sm-8">
+                        <div id="chosenCategories">
+
+                        </div>
                     </div>
                 </div>
 
@@ -85,30 +88,33 @@
     <script>
         moduelURL = "[[@{/categories}]]";
 
-        function checkUnique(form) {
-            catId = $("#id").val();
-            catName = $("#name").val();
-            catAlias = $("#alias").val();
-            csrfValue = $("input[name='_csrf']").val();
-            
-            url = "[[@{/categories/check_unique}]]";
+        $(document).ready(function () {
+            dropdownCategories = $("#categories")
+            divChosenCategories = $("#chosenCategories")
 
-            params = {id: catId, name: catName, alias: catAlias, _csrf: csrfValue};
-
-            $.post(url, params, function(response) {
-                if (response === "OK") {
-                    form.submit();
-                } else if (response === "DuplicateName") {
-                    showWarningModal("There is another category having same name " + catName);
-                } else if (response === "DuplicateAlias") {
-                    showWarningModal("There is another category having same alias " + catAlias);
-                } else {
-                    showErrorModal("Unknown response from server");
-                }
-            }).fail(function() {
-                showErrorModal("Could not connect to the server");
+            dropdownCategories.change(function () {
+                divChosenCategories.empty();
+                showChosenCategories();
             });
-            return false;
+        });
+
+        function showChosenCategories() {
+            dropdownCategories.children("option:selected").each(function () {
+                selectedCategory = $(this);
+                catId = selectedCategory.val();
+                catName = selectedCategory.text().replace(/-/g, "");
+
+                divChosenCategories.append(
+                    '<span class="badge badge-secondary m-1 p-1">' + catName + '</span>'
+                );
+            });
+            // divChosenCategories.append(
+            //     '<div class="badge badge-primary m-1">' +
+            //     '<span class="badge badge-pill">' + catName + '</span>' +
+            //     '<a href="javascript:void(0)" class="close" onclick="removeCategory(this)">&times;</a>' +
+            //     '<input type="hidden" name="categories[]" value="' + catId + '">' +
+            //     '</div>'
+            // );
         }
     </script>
     <script th:src="@{/js/common_form.js}"></script>
