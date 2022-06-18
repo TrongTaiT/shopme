@@ -35,6 +35,24 @@ public class Brand {
 	)
 	private Set<Category> categories = new HashSet<>();
 
+	@Override
+	public String toString() {
+		return "Brand [id=" + id + ", name=" + name + ", logo=" + logo + ", categories=" + categories + "]";
+	}
+
+	// constructors
+	public Brand() {
+	}
+
+	public Brand(String name) {
+		this.name = name;
+	}
+
+	public Brand(Integer id) {
+		this.id = id;
+	}
+
+	// getters && setters
 	public Integer getId() {
 		return id;
 	}
