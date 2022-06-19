@@ -49,9 +49,9 @@ public class ProductController {
 			Product product, //
 			RedirectAttributes ra) //
 	{
-		System.out.println("Product name: " + product.getName());
-		System.out.println("Product brandId: " + product.getBrand().getId());
-		System.out.println("Product categoryId: " + product.getCategory().getId());
+		productService.save(product);
+		
+		ra.addFlashAttribute("message", "The product has been saved successfully.");
 		return "redirect:/products";
 	}
 
