@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "products")
@@ -61,6 +62,7 @@ public class Product {
 	@Column(name = "main_image", nullable = false)
 	private String mainImage;
 
+	// foreign keys
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
@@ -75,6 +77,15 @@ public class Product {
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + "]";
+	}
+
+	// Transient fields
+	@Transient
+	public String getMainImagePath() {
+		if (id == null || this.mainImage == null) 
+			return "/images/image-thumbnail.png";
+		
+		return "/product-images/" + this.id + "/" + this.mainImage;
 	}
 
 	// getters && setters

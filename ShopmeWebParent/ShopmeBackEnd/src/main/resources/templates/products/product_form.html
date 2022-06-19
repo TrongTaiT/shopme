@@ -17,10 +17,8 @@
         </div>
 
         <form th:action="@{/products/save}" method="post" class="mx-auto" th:object="${product}"
-            onsubmit="return checkUnique(this);">
+            onsubmit="return checkUnique(this);" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
-            <!-- enctype="multipart/form-data"  -->
-            <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#overview" role="tab">
@@ -52,7 +50,9 @@
                 <div class="tab-pane p-3" id="description" role="tabpanel">
                     <div th:replace="products/product_description :: content"></div>
                 </div>
-                <div class="tab-pane p-3" id="images" role="tabpanel">Images</div>
+                <div class="tab-pane p-3" id="images" role="tabpanel">
+                    <div th:replace="products/product_images :: content"></div>
+                </div>
                 <div class="tab-pane p-3" id="details" role="tabpanel">Details</div>
                 <div class="tab-pane p-3" id="shipping" role="tabpanel">
                     <div th:replace="products/product_shipping :: content"></div>
@@ -71,6 +71,8 @@
 
     <script>
         moduelURL = "[[@{/products}]]";
+        MAX_FILE_SIZE = 512000; // 500kb
+
         dropdownBrands = $("#brand");
         dropdownCategories = $("#category");
 
