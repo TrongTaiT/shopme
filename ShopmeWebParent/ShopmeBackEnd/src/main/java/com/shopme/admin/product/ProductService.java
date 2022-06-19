@@ -42,7 +42,8 @@ public class ProductService {
 
 		boolean isCreatingNew = (id == null || id == 0);
 		if (isCreatingNew) {
-			if (productByName != null) return "Duplicate";
+			if (productByName != null)
+				return "Duplicate";
 		} else {
 			if (productByName != null && productByName.getId() != id) {
 				return "Duplicate";
@@ -53,7 +54,17 @@ public class ProductService {
 	}
 
 	public void updateProductEnabledStatus(Integer id, Boolean enabled) {
-		repo.updateEnabledStatus(id, enabled);		
+		repo.updateEnabledStatus(id, enabled);
+	}
+
+	public void delete(Integer id) throws ProductNotFoundException {
+		Long countById = repo.countById(id);
+
+		if (countById == null || countById == 0) {
+			throw new ProductNotFoundException("Could not find any Product with ID " + id);
+		}
+
+		repo.deleteById(id);
 	}
 
 }
