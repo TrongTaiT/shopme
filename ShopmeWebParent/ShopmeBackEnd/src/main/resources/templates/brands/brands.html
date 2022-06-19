@@ -20,7 +20,7 @@
                 <caption></caption>
                 <thead class="thead-dark">
                     <tr>
-                        <th>ID</th>
+                        <th class="hideable-column">Brand ID</th>
                         <th>Logo</th>
                         <th th:replace="fragments :: column_link('/brands', 'name', 'Brand Name', 'none')"></th>
                         <th>Categories</th>
@@ -29,7 +29,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="brand : ${listBrands}">
-                        <td>[[${brand.id}]]</td>
+                        <td class="hideable-column">[[${brand.id}]]</td>
                         <td>
                             <img th:src="@{${brand.logoPath}}" style="width: 100px;" class="img-fluid">
                         </td>
