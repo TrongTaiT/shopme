@@ -35,4 +35,19 @@ public class ProductService {
 		return repo.save(product);
 	}
 
+	public String checkUnique(Integer id, String name) {
+		Product productByName = repo.findByName(name);
+
+		boolean isCreatingNew = (id == null || id == 0);
+		if (isCreatingNew) {
+			if (productByName != null) return "Duplicate";
+		} else {
+			if (productByName != null && productByName.getId() != id) {
+				return "Duplicate";
+			}
+		}
+
+		return "OK";
+	}
+
 }
