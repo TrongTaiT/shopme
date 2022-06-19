@@ -4,13 +4,26 @@
 <body>
 	<div th:fragment="content" th:remove="tag">
 		<div class="row">
-			<div class="col border m-3 p-2">
-				<div><label for="">Main Image</label></div>
+			<label class="col-3 h4" for="fileImage">Main Image</label>
+			<div class="col">
+				<img id="thumbnail" th:src="@{${product.mainImagePath}}" class="img-fuild mx-5"
+					alt="Main image preview" style="width: 500px;">
+				<input type="file" id="fileImage" name="fileImage" accept="image/png, image/jpeg"
+					th:required="${product.id == null}">
+			</div>
+		</div>
+		<hr>
+		<h4 class="mt-5">Extra Images</h4>
+		<div class="row" id="divProductImages">
+			<div class="col border m-3 p-2" id="divExtraImage0">
+				<div id="extraImageHeader0"><label>Extra Image #1:</label></div>
 				<div class="m-2">
-					<img id="thumbnail" th:src="@{${product.mainImagePath}}" class="img-fuild" alt="Main image preview">
+					<img id="extraThumbnail0" alt="Extra image #1 preview" class="img-fluid"
+						th:src="@{/images/image-thumbnail.png}"/>
 				</div>
 				<div>
-					<input type="file" id="fileImage" name="fileImage" accept="image/png, image/jpeg" th:required="${product.id == null}">
+					<input type="file" name="extraImage" 
+						accept="image/png, image/jpeg" />
 				</div>
 			</div>
 		</div>

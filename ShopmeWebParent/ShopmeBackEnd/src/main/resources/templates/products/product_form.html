@@ -70,68 +70,13 @@
     </div>
 
     <script>
+        MAX_FILE_SIZE = 500; // 500kb
         moduelURL = "[[@{/products}]]";
-        MAX_FILE_SIZE = 512000; // 500kb
-
-        dropdownBrands = $("#brand");
-        dropdownCategories = $("#category");
-
-        $(document).ready(function () {
-            $("#shortDescription").richText();
-            $("#fullDescription").richText();
-
-            getCategories();
-
-            dropdownBrands.change(function () {
-                dropdownCategories.empty();
-                getCategories();
-            });
-        });
-
-        function getCategories() {
-            brandId = dropdownBrands.val();
-            url = "[[@{/brands}]]" + "/" + brandId + "/categories";
-
-            $.get(url, function (responseJson) {
-                $.each(responseJson, function (index, category) {
-                    dropdownCategories.append(
-                        $("<option></option>")
-                            .val(category.id)
-                            .text(category.name)
-                    );
-                });
-            });
-        }
-
-        function checkUnique(form) {
-            url = moduelURL + "/check_unique";
-
-            productId = form.id.value;
-            productName = form.name.value;
-            _csrf = form._csrf.value;
-
-            params = {
-                id: productId,
-                name: productName,
-                _csrf: _csrf
-            };
-
-            $.post(url, params, function (response) {
-                if (response === "OK") {
-                    form.submit();
-                } else if (response === "Duplicate") {
-                    showWarningModal("There is another product having same name " + form.name.value);
-                } else {
-                    showErrorModal("Unknown response from server");
-                }
-            }).fail(function (response) {
-                showErrorModal("Could not connect to the server");
-            });
-
-            return false;
-        }
+        brandModuleURL = "[[@{/brands}]]";
+        defaultImageThumbnailSrc = "[[@{/images/image-thumbnail.png}]]";
     </script>
     <script th:src="@{/js/common_form.js}"></script>
+    <script th:src="@{/js/product_form.js}"></script>
 </body>
 
 </html>
