@@ -3,27 +3,51 @@
 
 <body>
 	<div th:fragment="content" th:remove="tag">
+		<div>
+			<label class="h4" for="fileImage">Main Image: [[${product.mainImage}]]</label>
+		</div>
 		<div class="row">
-			<label class="col-3 h4" for="fileImage">Main Image</label>
 			<div class="col">
-				<img id="thumbnail" th:src="@{${product.mainImagePath}}" class="img-fuild mx-5"
-					alt="Main image preview" style="width: 500px;">
+				<img id="thumbnail" th:src="@{${product.mainImagePath}}" class="img-fuild mx-5" alt="Main image preview"
+					style="width: 500px;">
 				<input type="file" id="fileImage" name="fileImage" accept="image/png, image/jpeg"
-					th:required="${product.id == null}">
+					th:required="${product.mainImage == null}">
 			</div>
+			<input type="hidden" th:field="*{mainImage}">
 		</div>
 		<hr>
 		<h4 class="mt-5">Extra Images</h4>
 		<div class="row" id="divProductImages">
-			<div class="col border m-3 p-2" id="divExtraImage0">
-				<div id="extraImageHeader0"><label>Extra Image #1:</label></div>
+			<th:block th:each="productImage, status : ${product.images}">
+				<div class="col-sm-3 border m-3 p-2" th:id="'divExtraImage' + ${status.index}">
+					<div th:id="'extraImageHeader' + ${status.index}">
+						<label>Extra Image #[[${status.index + 1}]]: [[${productImage.name}]]</label>
+						<a class="btn fas fa-times-circle fa-2x icon-dark float-right" title="Remove this image"
+							th:href="'javascript:removeExtraImage(' + ${status.index} + ')'"></a>
+					</div>
+					<div class="m-2">
+						<img th:id="'extraThumbnail' + ${status.index}"
+							th:alt="'Extra image #' + ${status.index + 1} + ' preview'" class="img-fluid"
+							th:src="@{${productImage.imagePath}}" />
+					</div>
+					<div>
+						<input type="file" name="extraImage" accept="image/png, image/jpeg" />
+					</div>
+					<input type="hidden" name="imageIds" th:id="'imageId' + ${status.index}">
+					<input type="hidden" name="imageNames" th:id="'imageName' + ${status.index}">
+				</div>
+			</th:block>
+
+			<div class="col-sm-3 border m-3 p-2" th:id="'divExtraImage' + ${numberOfExistingExtraImages}">
+				<div th:id="'extraImageHeader' + ${numberOfExistingExtraImages}"><label>Extra Image
+						#[[${numberOfExistingExtraImages + 1}]]:</label></div>
 				<div class="m-2">
-					<img id="extraThumbnail0" alt="Extra image #1 preview" class="img-fluid"
-						th:src="@{/images/image-thumbnail.png}"/>
+					<img th:id="'extraThumbnail' + ${numberOfExistingExtraImages}"
+						th:alt="'Extra image #' + ${numberOfExistingExtraImages} + ' preview'" class="img-fluid"
+						th:src="@{/images/image-thumbnail.png}" />
 				</div>
 				<div>
-					<input type="file" name="extraImage" 
-						accept="image/png, image/jpeg" />
+					<input type="file" name="extraImage" accept="image/png, image/jpeg" />
 				</div>
 			</div>
 		</div>

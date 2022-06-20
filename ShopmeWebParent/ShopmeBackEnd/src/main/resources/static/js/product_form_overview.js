@@ -11,8 +11,21 @@ $(document).ready(function() {
 		getCategories();
 	});	
 	
-	getCategories();	
+	getCategoriesForNewForm();	
 });
+
+function getCategoriesForNewForm() {
+	catIdField = $("#categoryId");
+	editMode = false;
+
+	if (catIdField.length > 0) {
+		editMode = true;
+	}
+
+	if (!editMode) {
+		getCategories();
+	}
+}
 
 function getCategories() {
 	brandId = dropdownBrands.val(); 

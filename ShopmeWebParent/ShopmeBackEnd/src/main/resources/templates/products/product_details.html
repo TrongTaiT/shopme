@@ -3,7 +3,20 @@
 
 <body>
 	<div th:fragment="content" id="divProductDetails">
-		<div class="form-inline" id="divDetail0">
+		<th:block th:each="detail, status : ${product.details}">
+			<div class="form-inline" th:id="'divDetail' + ${status.index}">
+				<label class="m-3">Name:</label>
+				<input type="text" name="detailNames" th:value="${detail.name}" class="form-control w-25"
+					maxlength="255">
+				<label class="m-3">Value:</label>
+				<input type="text" name="detailValues" th:value="${detail.value}" class="form-control w-25"
+					maxlength="255">
+				<a class="btn fas fa-times-circle icon-dark" title="Remove this detail"
+					th:href="'javascript:removeDetailSectionById(\'divDetail' + ${status.index} + '\')'"></a>
+			</div>
+		</th:block>
+
+		<div class="form-inline" th:id="'divDetail' + ${#lists.size(product.details)}">
 			<label class="m-3">Name:</label>
 			<input type="text" class="form-control w-25" name="detailNames" maxlength="255">
 			<label class="m-3">Value:</label>

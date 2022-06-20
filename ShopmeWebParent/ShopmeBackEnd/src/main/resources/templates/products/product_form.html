@@ -19,6 +19,8 @@
         <form th:action="@{/products/save}" method="post" class="mx-auto" th:object="${product}"
             onsubmit="return checkUnique(this);" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
+            <input th:if="${product.category != null}" type="hidden" id="categoryId" th:value="${product.category.id}">
+
             <div class="d-flex justify-content-between align-items-center">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
