@@ -33,12 +33,18 @@ public class ProductDetail {
 	}
 
 	public ProductDetail(String name, String value, Product product) {
-		super();
 		this.name = name;
 		this.value = value;
 		this.product = product;
 	}
 
+	public ProductDetail(Integer id, String name, String value, Product product) {
+		this.id = id;
+		this.name = name;
+		this.value = value;
+		this.product = product;
+	}
+	
 	// getters && setters
 	public Integer getId() {
 		return id;
