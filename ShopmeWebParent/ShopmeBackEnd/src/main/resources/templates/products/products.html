@@ -22,7 +22,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Main Image</th>
-                        <th>Product Name</th>
+                        <th th:replace="fragments :: column_link('/products', 'name', 'Product Name', 'none')"></th>
                         <th>Brand</th>
                         <th>Category</th>
                         <th>Enabled</th>
@@ -33,9 +33,13 @@
                     <tr th:each="product : ${listProducts}">
                         <td>[[${product.id}]]</td>
                         <td>
-                            <img th:src="@{${product.mainImagePath}}" class="img-fluid" style="width: 120px;" alt="Product's image">
+                            <img th:src="@{${product.mainImagePath}}" class="img-fluid" style="width: 120px;"
+                                alt="Product's image">
                         </td>
-                        <td>[[${product.name}]]</td>
+                        <td>
+                            <a th:href="@{'/products/detail/' + ${product.id}}" class="link-detail"
+                                title="View detail of this product">[[${product.name}]]</a>
+                        </td>
                         <td>[[${product.brand.name}]]</td>
                         <td>[[${product.category.name}]]</td>
                         <td>
@@ -44,7 +48,7 @@
                             </div>
                         </td>
                         <td>
-                            <a th:href="@{'/products/detail/' + ${product.id}}" class="fas fa-file-alt fa-2x icon-green"
+                            <a th:href="@{'/products/detail/' + ${product.id}}" class="link-detail fas fa-file-alt fa-2x icon-green"
                                 title="View detail of this product"></a>
                             &nbsp;
                             <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})"></div>
@@ -81,6 +85,14 @@
 
         <div th:replace="modal_fragments :: confirm_modal"></div>
 
+        <div class="modal fade modal-fullscreen" id="detailModel">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+
+                </div>
+            </div>
+        </div>
+
     </div>
     <script th:src="@{/js/common_list.js}"></script>
     <script>
@@ -90,6 +102,12 @@
             $(".link-delete").click(function (e) {
                 e.preventDefault();
                 showDeleteConfirmModal($(this), 'product');
+            });
+
+            $(".link-detail").click(function (e) {
+                e.preventDefault();
+                linkDetailURL = $(this).attr("href");
+                $("#detailModel").modal("show").find(".modal-content").load(linkDetailURL);
             });
         });
     </script>
