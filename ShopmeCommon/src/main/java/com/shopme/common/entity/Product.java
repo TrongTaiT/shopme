@@ -92,7 +92,15 @@ public class Product {
 			return "/images/image-thumbnail.png";
 
 		return "/product-images/" + this.id + "/" + this.mainImage;
-	}	
+	}
+	
+	@Transient
+	public String getShortName() {
+		if (this.name.length() > 70) {
+			return this.name.substring(0, 70).concat("...");
+		}
+		return name;
+	}
 
 	// getters && setters
 	public List<ProductDetail> getDetails() {
