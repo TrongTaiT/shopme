@@ -1,7 +1,9 @@
 package com.shopme.common.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -74,6 +76,9 @@ public class Product {
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<ProductImage> images = new HashSet<>();
 
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private List<ProductDetail> details = new ArrayList<>();
+
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + "]";
@@ -82,13 +87,37 @@ public class Product {
 	// Transient fields
 	@Transient
 	public String getMainImagePath() {
-		if (id == null || this.mainImage == null) 
+		if (id == null || this.mainImage == null)
 			return "/images/image-thumbnail.png";
-		
+
 		return "/product-images/" + this.id + "/" + this.mainImage;
 	}
 
 	// getters && setters
+	public List<ProductDetail> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<ProductDetail> productDetails) {
+		this.details = productDetails;
+	}
+	
+	public void addDetail(String name, String value) {
+		this.details.add(new ProductDetail(name, value, this));
+	}
+	
+	public Set<ProductImage> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<ProductImage> images) {
+		this.images = images;
+	}
+
+	public void addExtraImage(String imageName) {
+		this.images.add(new ProductImage(imageName, this));
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -239,18 +268,6 @@ public class Product {
 
 	public void setBrand(Brand brand) {
 		this.brand = brand;
-	}
-
-	public Set<ProductImage> getImages() {
-		return images;
-	}
-
-	public void setImages(Set<ProductImage> images) {
-		this.images = images;
-	}
-
-	public void addExtraImage(String imageName) {
-		this.images.add(new ProductImage(imageName, this));
 	}
 
 }
