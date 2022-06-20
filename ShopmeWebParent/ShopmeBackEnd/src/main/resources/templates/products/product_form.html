@@ -19,29 +19,35 @@
         <form th:action="@{/products/save}" method="post" class="mx-auto" th:object="${product}"
             onsubmit="return checkUnique(this);" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#overview" role="tab">
-                        Overview</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#description" role="tab">
-                        Description</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#images" role="tab">
-                        Images</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#details" role="tab">
-                        Details</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#shipping" role="tab">
-                        Shipping</a>
-                </li>
-            </ul>
+            <div class="d-flex justify-content-between align-items-center">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#overview" role="tab">
+                            Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#description" role="tab">
+                            Description</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#images" role="tab">
+                            Images</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#details" role="tab">
+                            Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#shipping" role="tab">
+                            Shipping</a>
+                    </li>
+                </ul>
 
+                <div class="text-center">
+                    <input type="button" value="Cancel" class="btn btn-outline-danger" id="buttonCancel">
+                    <input type="submit" value="Save" class="btn btn-primary m-3">
+                </div>
+            </div>
             <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane p-3 active" id="overview" role="tabpanel">
@@ -53,13 +59,15 @@
                 <div class="tab-pane p-3" id="images" role="tabpanel">
                     <div th:replace="products/product_images :: content"></div>
                 </div>
-                <div class="tab-pane p-3" id="details" role="tabpanel">Details</div>
+                <div class="tab-pane p-3" id="details" role="tabpanel">
+                    <div th:replace="products/product_details :: content"></div>
+                    <div>
+                        <input type="button" class="btn btn-secondary" value="Add More Detail"
+                            onclick="addNextDetailSection();">
+                    </div>
+                </div>
                 <div class="tab-pane p-3" id="shipping" role="tabpanel">
                     <div th:replace="products/product_shipping :: content"></div>
-                </div>
-                <div class="text-center">
-                    <input type="submit" value="Save" class="btn btn-primary m-3">
-                    <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel">
                 </div>
             </div>
         </form>
@@ -76,7 +84,9 @@
         defaultImageThumbnailSrc = "[[@{/images/image-thumbnail.png}]]";
     </script>
     <script th:src="@{/js/common_form.js}"></script>
-    <script th:src="@{/js/product_form.js}"></script>
+    <script th:src="@{/js/product_form_overview.js}"></script>
+    <script th:src="@{/js/product_form_images.js}"></script>
+    <script th:src="@{/js/product_form_details.js}"></script>
 </body>
 
 </html>
