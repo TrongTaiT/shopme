@@ -57,11 +57,14 @@ public class ProductController {
 			Product product, //
 			RedirectAttributes ra, //
 			@RequestParam("fileImage") MultipartFile mainImageMultipart, //
-			@RequestParam("extraImage") MultipartFile[] extraImageMultiparts) //
+			@RequestParam("extraImage") MultipartFile[] extraImageMultiparts, //
+			@RequestParam(name = "detailNames", required = false) String[] detailNames, //
+			@RequestParam(name = "detailValues", required = false) String[] detailValues) //
 			throws IOException //
 	{
 		setMainImageName(mainImageMultipart, product);
 		setExtraImageNames(extraImageMultiparts, product);
+		setProductDetails(detailNames, detailValues, product);
 
 		Product savedProduct = productService.save(product);
 
@@ -114,6 +117,20 @@ public class ProductController {
 		}
 	}
 
+	private void setProductDetails(String[] detailNames, String[] detailValues, Product product) {
+		if (detailNames == null || detailNames.length == 0)
+			return;
+		
+		for (int count = 0; count < detailNames.length; count++) {
+			String name = detailNames[count];
+			String value = detailValues[count];
+			
+			if (!name.isEmpty() && !value.isEmpty()) {
+				product.addDetail(name, value);
+			}
+		}
+	}
+
 	@GetMapping("/products/{id}/enabled/{status}")
 	public String updateProductEnabledStatus( //
 			@PathVariable("id") Integer id, //
@@ -136,12 +153,12 @@ public class ProductController {
 	{
 		try {
 			productService.delete(id);
-			
-			String productExtraImagesDir = "../product-images/" + id + "/extras";			
+
+			String productExtraImagesDir = "../product-images/" + id + "/extras";
 			FileUploadUtil.removeDir(productExtraImagesDir);
 			String productImagesDir = "../product-images/" + id;
 			FileUploadUtil.removeDir(productImagesDir);
-			
+
 			ra.addFlashAttribute("message", "The product with ID " + id + " has been deleted successfully.");
 		} catch (ProductNotFoundException e) {
 			ra.addFlashAttribute("message", e.getMessage());
