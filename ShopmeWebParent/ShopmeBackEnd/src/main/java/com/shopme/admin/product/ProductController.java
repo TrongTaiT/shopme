@@ -35,8 +35,6 @@ import com.shopme.common.entity.ProductImage;
 @Controller
 public class ProductController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
-
 	@Autowired
 	private ProductService productService;
 
@@ -129,120 +127,20 @@ public class ProductController {
 				return "redirect:/products";
 			}
 		}
-		
-		setMainImageName(mainImageMultipart, product);
-		setExistingExtraImageNames(imageIDs, imageNames, product);
-		setNewExtraImageNames(extraImageMultiparts, product);
-		setProductDetails(detailIDs, detailNames, detailValues, product);
+
+		ProductSaveHelper.setMainImageName(mainImageMultipart, product);
+		ProductSaveHelper.setExistingExtraImageNames(imageIDs, imageNames, product);
+		ProductSaveHelper.setNewExtraImageNames(extraImageMultiparts, product);
+		ProductSaveHelper.setProductDetails(detailIDs, detailNames, detailValues, product);
 
 		Product savedProduct = productService.save(product);
 
-		savedUploadedImages(mainImageMultipart, extraImageMultiparts, savedProduct);
+		ProductSaveHelper.savedUploadedImages(mainImageMultipart, extraImageMultiparts, savedProduct);
 
-		deleteExtraImagesWeredRemovedOnForm(product);
+		ProductSaveHelper.deleteExtraImagesWeredRemovedOnForm(product);
 
 		ra.addFlashAttribute("message", "The product has been saved successfully.");
 		return "redirect:/products";
-	}
-
-	private void deleteExtraImagesWeredRemovedOnForm(Product product) {
-		String extraImageDir = "../product-images/" + product.getId() + "/extras";
-		Path dirPath = Paths.get(extraImageDir);
-
-		try {
-			Files.list(dirPath).forEach(file -> {
-				String fileName = file.toFile().getName();
-
-				if (!product.containsImageName(fileName)) {
-					try {
-						Files.delete(file);
-						LOGGER.info("Deleted extra image: " + fileName);
-					} catch (IOException e) {
-						LOGGER.error("Could not delete extra image: " + fileName);
-					}
-				}
-			});
-		} catch (IOException e) {
-			LOGGER.error("Could not list directory: " + dirPath);
-		}
-	}
-
-	private void setMainImageName(MultipartFile mainImageMultipart, Product product) {
-		if (!mainImageMultipart.isEmpty()) {
-			String fileName = StringUtils.cleanPath(mainImageMultipart.getOriginalFilename());
-			product.setMainImage(fileName);
-		}
-	}
-
-	private void setExistingExtraImageNames(String[] imagesIDs, String[] imageNames, Product product) {
-		if (imagesIDs == null || imagesIDs.length == 0)
-			return;
-
-		Set<ProductImage> images = new HashSet<>();
-		for (int count = 0; count < imagesIDs.length; count++) {
-			Integer id = Integer.parseInt(imagesIDs[count]);
-			String name = StringUtils.cleanPath(imageNames[count]);
-
-			images.add(new ProductImage(id, name, product));
-		}
-
-		product.setImages(images);
-	}
-
-	private void setNewExtraImageNames(MultipartFile[] extraImageMultiparts, Product product) {
-		if (extraImageMultiparts.length > 0) {
-			for (MultipartFile multipartFile : extraImageMultiparts) {
-				if (!multipartFile.isEmpty()) {
-					String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-
-					if (!product.containsImageName(fileName)) {
-						product.addExtraImage(fileName);
-					}
-				}
-			}
-		}
-	}
-
-	private void savedUploadedImages(MultipartFile mainImageMultipart, //
-			MultipartFile[] extraImageMultiparts, Product savedProduct) throws IOException //
-	{
-		if (!mainImageMultipart.isEmpty()) {
-			String fileName = StringUtils.cleanPath(mainImageMultipart.getOriginalFilename());
-			String uploadDir = "../product-images/" + savedProduct.getId();
-
-			FileUploadUtil.cleanDir(uploadDir);
-			FileUploadUtil.saveFile(uploadDir, fileName, mainImageMultipart);
-		}
-
-		if (extraImageMultiparts.length > 0) {
-			String uploadDir = "../product-images/" + savedProduct.getId() + "/extras";
-
-			for (MultipartFile multipartFile : extraImageMultiparts) {
-				if (multipartFile.isEmpty())
-					continue;
-
-				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-
-				FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-			}
-		}
-	}
-
-	private void setProductDetails(String[] detailIDs, String[] detailNames, String[] detailValues, Product product) {
-		if (detailNames == null || detailNames.length == 0)
-			return;
-
-		for (int count = 0; count < detailNames.length; count++) {
-			String name = detailNames[count];
-			String value = detailValues[count];
-			Integer id = Integer.parseInt(detailIDs[count]);
-
-			if (id != 0) {
-				product.addDetail(id, name, value);
-			} else if (!name.isEmpty() && !value.isEmpty()) {
-				product.addDetail(name, value);
-			}
-		}
 	}
 
 	@GetMapping("/products/{id}/enabled/{status}")
