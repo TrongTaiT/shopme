@@ -24,7 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.brand.BrandService;
+import com.shopme.admin.category.CategoryService;
 import com.shopme.common.entity.Brand;
+import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Product;
 import com.shopme.common.entity.ProductImage;
 
@@ -38,10 +40,13 @@ public class ProductController {
 
 	@Autowired
 	private BrandService brandService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	@GetMapping("/products")
 	public String listFirstPage(Model model) {
-		return listByPage(model, 1, "name", "asc", null);
+		return listByPage(model, 1, "name", "asc", null, 0);
 	}
 
 	@GetMapping("/products/page/{pageNum}")
@@ -50,11 +55,15 @@ public class ProductController {
 			@PathVariable("pageNum") int pageNum, //
 			@RequestParam(name = "sortField", required = false) String sortField, //
 			@RequestParam(name = "sortDir", required = false) String sortDir, //
-			@RequestParam(name = "keyword", required = false) String keyword) //
+			@RequestParam(name = "keyword", required = false) String keyword, //
+			@RequestParam(name = "categoryId", required = false) Integer categoryId) //
 	{
-		Page<Product> page = productService.listByPage(pageNum, sortField, sortDir, keyword);
+		Page<Product> page = productService.listByPage(pageNum, sortField, sortDir, //
+				keyword, categoryId);
 		
 		List<Product> listProducts = page.getContent();
+		
+		List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 		
 		long startCount = ProductService.PRODUCTS_PER_PAGE * (pageNum - 1) + 1;
 		long endCount = startCount + ProductService.PRODUCTS_PER_PAGE - 1;
@@ -63,6 +72,7 @@ public class ProductController {
 		}
 		
 		model.addAttribute("currentPage", pageNum);
+		model.addAttribute("categoryId", categoryId);
 		model.addAttribute("totalPages", page.getTotalPages());		
 		model.addAttribute("startCount", startCount);
 		model.addAttribute("endCount", endCount);
@@ -71,6 +81,7 @@ public class ProductController {
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("keyword", keyword);		
 		model.addAttribute("listProducts", listProducts);
+		model.addAttribute("listCategories", listCategories);
 		
 		return "products/products";
 	}

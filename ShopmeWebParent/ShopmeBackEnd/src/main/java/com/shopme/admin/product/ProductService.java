@@ -27,13 +27,23 @@ public class ProductService {
 		return (List<Product>) repo.findAll();
 	}
 
-	public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
+	public Page<Product> listByPage(int pageNum, String sortField, String sortDir, //
+			String keyword, Integer categoryId) {
 		Sort sort = Sort.by(sortField);
 		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 		
 		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
+
+		if (categoryId != null && categoryId > 0) {
+			String categoryIdMatch = "-" + String.valueOf(categoryId) + "-";
+			if (keyword != null && !keyword.isEmpty()) {
+				return repo.searchInCategory(categoryId, categoryIdMatch, keyword, pageable);
+			} else {
+				return repo.findAllInCategory(categoryId, categoryIdMatch, pageable);
+			}		
+		}
 		
-		if (keyword != null) {
+		if (keyword != null && !keyword.isEmpty()) {
 			return repo.findAll(keyword, pageable);
 		}
 

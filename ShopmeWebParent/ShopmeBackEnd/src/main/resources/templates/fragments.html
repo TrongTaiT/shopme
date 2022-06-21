@@ -29,15 +29,17 @@
 		<a class="text-white" th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName}
             +'&sortDir='
             + ${sortField != fieldName ? 'asc' : (sortDir == 'asc' ? 'desc' : 'asc')}
-            + ${keyword != null ? ('&keyword=' + keyword) : ''}}">
+            + ${keyword != null ? ('&keyword=' + keyword) : ''}
+			+ ${categoryId != null ? ('&categoryId=' + categoryId) : ''}}">
 			[[${columnLabel}]]
 		</a>
 		<span th:if="${sortField == fieldName}"
 			th:class="@{'fa-solid ' + ${sortDir == 'asc' ?  'fa-sort-up' : 'fa-sort-down'}}"></span>
 	</th>
 
-	<a th:fragment="page_link(moduleURL, pageNum, label)" class="page-link" th:href="@{${moduleURL} +'/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' 
-        + ${sortDir}}+ ${keyword != null ? ('&keyword=' + keyword) : ''}">
+	<a th:fragment="page_link(moduleURL, pageNum, label)" class="page-link"
+		th:href="@{${moduleURL} +'/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' 
+        + ${sortDir}} + ${keyword != null ? ('&keyword=' + keyword) : ''} + ${categoryId != null ? ('&categoryId=' + categoryId) : ''}">
 		[[${label}]]
 	</a>
 
@@ -45,8 +47,8 @@
 		<a th:if="${enabled == true}" class="fas fa-check-circle fa-2x icon-green"
 			th:href="@{${entityURL} + '/enabled/false'}" th:title="'Disable this ' + ${entityName}"></a>
 
-		<a th:if="${enabled == false}" class="fas fa-circle fa-2x icon-dark"
-			th:href="@{${entityURL} + '/enabled/true'}" th:title="'Enable this ' + ${entityName}"></a>
+		<a th:if="${enabled == false}" class="fas fa-circle fa-2x icon-dark" th:href="@{${entityURL} + '/enabled/true'}"
+			th:title="'Enable this ' + ${entityName}"></a>
 	</div>
 
 	<div th:fragment="user_photos" th:remove="tag">
@@ -55,14 +57,13 @@
 	</div>
 
 	<div th:fragment="edit(entityName, editURL)" th:remove="tag">
-		<a class="fas fa-edit fa-2x icon-green" th:href="@{${editURL}}" 
-			th:title="'Edit this ' + ${entityName}"></a>
+		<a class="fas fa-edit fa-2x icon-green" th:href="@{${editURL}}" th:title="'Edit this ' + ${entityName}"></a>
 	</div>
-	
+
 	<div th:fragment="delete(entityName, entityId, deleteURL, visible)" th:remove="tag">
 		<th:block th:if="${visible}">
-			<a class="fas fa-trash fa-2x icon-dark link-delete" th:href="@{${deleteURL}}"
-				th:entityId="${entityId}" th:title="'Delete this ' + ${entityName}"></a>
+			<a class="fas fa-trash fa-2x icon-dark link-delete" th:href="@{${deleteURL}}" th:entityId="${entityId}"
+				th:title="'Delete this ' + ${entityName}"></a>
 		</th:block>
 	</div>
 
@@ -109,13 +110,13 @@
 			</button>
 			&nbsp;&nbsp;
 			<butotn type="button" class="btn btn-secondary" onclick="clearFilter();">
-				<i class="fa-solid fa-eraser"></i>
+				<i class="fa-solid fa-filter-circle-xmark"></i>
 			</butotn>
 		</form>
-		
-        <div th:if="${message != null}" class="alert alert-success text-center">
-            [[${message}]]
-        </div>
+
+		<div th:if="${message != null}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
 	</div>
 
 </body>
