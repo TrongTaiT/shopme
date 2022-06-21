@@ -66,6 +66,19 @@ public class ProductService {
 
 		return repo.save(product);
 	}
+	
+	public void saveProductPrice(Product productInForm) throws ProductNotFoundException {
+		try {
+			Product productInDB = repo.findById(productInForm.getId()).get();
+			productInDB.setCost(productInForm.getCost());
+			productInDB.setPrice(productInForm.getPrice());
+			productInDB.setDiscountPercent(productInForm.getDiscountPercent());
+			
+			repo.save(productInDB);
+		} catch (NoSuchElementException e) {
+			throw new ProductNotFoundException("Could not find any Product with ID " + productInForm.getId());
+		}
+	}
 
 	public String checkUnique(Integer id, String name) {
 		Product productByName = repo.findByName(name);

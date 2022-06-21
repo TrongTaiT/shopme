@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:replace="fragments :: page_head('Products - Shopme Admin')"></head>
 
@@ -9,8 +9,10 @@
 
         <div>
             <h2>Manage Products</h2>
-            <a th:href="@{/products/new}" class="fa-solid fa-folder-plus fa-2x icon-dark mr-2"></a>
-            <a th:href="@{/products/export/csv}" class="fa-solid fa-file-csv fa-2x icon-dark mr-2"></a>
+            <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                <a th:href="@{/products/new}" class="fa-solid fa-folder-plus fa-2x icon-dark mr-2"></a>
+                <a th:href="@{/products/export/csv}" class="fa-solid fa-file-csv fa-2x icon-dark mr-2"></a>
+            </th:block>
         </div>
 
         <form th:action="@{/products/page/1}" id="searchForm" class="form-inline m-3">
@@ -20,7 +22,8 @@
             Category:
             <select class="form-control mx-2" name="categoryId" id="dropdownCategory">
                 <option value="0">All Category</option>
-                <option th:each="category : ${listCategories}" th:value="${category.id}" th:selected="${categoryId == category.id}">
+                <option th:each="category : ${listCategories}" th:value="${category.id}"
+                    th:selected="${categoryId == category.id}">
                     [[${category.name}]]
                 </option>
             </select>
@@ -51,7 +54,9 @@
                         <th th:replace="fragments :: column_link('/products', 'name', 'Product Name', 'none')"></th>
                         <th th:replace="fragments :: column_link('/products', 'brand', 'Brand', 'none')"></th>
                         <th th:replace="fragments :: column_link('/products', 'category', 'Category', 'none')"></th>
-                        <th th:replace="fragments :: column_link('/products', 'enabled', 'Enabled', 'none')"></th>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                            <th th:replace="fragments :: column_link('/products', 'enabled', 'Enabled', 'none')"></th>
+                        </th:block>
                         <th></th>
                     </tr>
                 </thead>
@@ -68,21 +73,27 @@
                         </td>
                         <td>[[${product.brand.name}]]</td>
                         <td>[[${product.category.name}]]</td>
-                        <td>
-                            <div
-                                th:replace="fragments :: status(${product.enabled}, 'product', '/products/' + ${product.id})">
-                            </div>
-                        </td>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                            <td>
+                                <div
+                                    th:replace="fragments :: status(${product.enabled}, 'product', '/products/' + ${product.id})">
+                                </div>
+                            </td>
+                        </th:block>
                         <td>
                             <a th:href="@{'/products/detail/' + ${product.id}}"
                                 class="link-detail fas fa-file-alt fa-2x icon-green"
                                 title="View detail of this product"></a>
                             &nbsp;
-                            <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})"></div>
-                            &nbsp;
-                            <div
-                                th:replace="fragments :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)">
-                            </div>
+                            <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+                                <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})"></div>
+                                &nbsp;
+                            </th:block>
+                            <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                                <div
+                                    th:replace="fragments :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)">
+                                </div>
+                            </th:block>
                         </td>
                     </tr>
                 </tbody>

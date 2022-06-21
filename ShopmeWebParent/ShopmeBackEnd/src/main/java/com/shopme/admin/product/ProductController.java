@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.brand.BrandService;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Product;
@@ -40,7 +42,7 @@ public class ProductController {
 
 	@Autowired
 	private BrandService brandService;
-	
+
 	@Autowired
 	private CategoryService categoryService;
 
@@ -60,29 +62,29 @@ public class ProductController {
 	{
 		Page<Product> page = productService.listByPage(pageNum, sortField, sortDir, //
 				keyword, categoryId);
-		
+
 		List<Product> listProducts = page.getContent();
-		
+
 		List<Category> listCategories = categoryService.listCategoriesUsedInForm();
-		
+
 		long startCount = ProductService.PRODUCTS_PER_PAGE * (pageNum - 1) + 1;
 		long endCount = startCount + ProductService.PRODUCTS_PER_PAGE - 1;
 		if (endCount > page.getTotalElements()) {
 			endCount = page.getTotalElements();
 		}
-		
+
 		model.addAttribute("currentPage", pageNum);
 		model.addAttribute("categoryId", categoryId);
-		model.addAttribute("totalPages", page.getTotalPages());		
+		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("startCount", startCount);
 		model.addAttribute("endCount", endCount);
-		model.addAttribute("totalItems", page.getTotalElements());	
+		model.addAttribute("totalItems", page.getTotalElements());
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("sortDir", sortDir);
-		model.addAttribute("keyword", keyword);		
+		model.addAttribute("keyword", keyword);
 		model.addAttribute("listProducts", listProducts);
 		model.addAttribute("listCategories", listCategories);
-		
+
 		return "products/products";
 	}
 
@@ -97,6 +99,7 @@ public class ProductController {
 		model.addAttribute("listBrands", listBrands);
 		model.addAttribute("product", product);
 		model.addAttribute("pageTitle", "Create New Product");
+		model.addAttribute("numberOfExistingExtraImages", 0);
 
 		return "products/product_form";
 	}
@@ -106,15 +109,27 @@ public class ProductController {
 			Model model, //
 			Product product, //
 			RedirectAttributes ra, //
-			@RequestParam("fileImage") MultipartFile mainImageMultipart, //
-			@RequestParam("extraImage") MultipartFile[] extraImageMultiparts, //
+			@RequestParam(value = "fileImage", required = false) MultipartFile mainImageMultipart, //
+			@RequestParam(value = "extraImage", required = false) MultipartFile[] extraImageMultiparts, //
 			@RequestParam(name = "detailIDs", required = false) String[] detailIDs, //
 			@RequestParam(name = "detailNames", required = false) String[] detailNames, //
 			@RequestParam(name = "detailValues", required = false) String[] detailValues, //
 			@RequestParam(name = "imageIDs", required = false) String[] imageIDs, //
-			@RequestParam(name = "imageNames", required = false) String[] imageNames) //
+			@RequestParam(name = "imageNames", required = false) String[] imageNames, //
+			@AuthenticationPrincipal ShopmeUserDetails loggedUser) //
 			throws IOException //
 	{
+		if (loggedUser.hasRole("Salesperson")) {
+			try {
+				productService.saveProductPrice(product);
+				ra.addFlashAttribute("message", "The product has been saved successfully.");
+				return "redirect:/products";
+			} catch (ProductNotFoundException e) {
+				ra.addFlashAttribute("message", e.getMessage());
+				return "redirect:/products";
+			}
+		}
+		
 		setMainImageName(mainImageMultipart, product);
 		setExistingExtraImageNames(imageIDs, imageNames, product);
 		setNewExtraImageNames(extraImageMultiparts, product);
