@@ -12,8 +12,16 @@
 		<div class="row">
 			<div class="col-sm">
 				<div>
-					<img th:src="@{${product.mainImagePath}}" th:title="${product.name}" th:alt="${product.name}"
+					<img id="bigImage" th:src="@{${product.mainImagePath}}" index="0" th:title="${product.name}" th:alt="${product.name}"
 						class="img-fluid">
+				</div>
+				<div class="row justify-content-center mt-3">
+					<div>
+						<img th:src="@{${product.mainImagePath}}" index="0" class="image-thumbnail border border-secondary m-1 p-1" th:alt="${product.name}" height="50">
+					</div>
+					<th:block th:each="extraImage, status : ${product.images}">
+						<img th:src="@{${extraImage.imagePath}}" th:index="${status.count}" class="image-thumbnail border border-secondary m-1 p-1" th:alt="${extraImage.name}" height="50">
+					</th:block>
 				</div>
 			</div>
 			<div class="col-sm">
@@ -25,6 +33,7 @@
 				</div>
 				<div>
 					List Price:
+					
 					<b th:if="${product.discountPercent <= 0}" class="text-danger ">
 						$[[${product.price}]]
 					</b>
@@ -78,7 +87,32 @@
 		</div>
 	</div>
 
+	<div th:replace="product/images_carousel :: content"></div>
+
 	<div th:replace="navigation :: footer_menu"></div>
+
+	<script>
+		$(document).ready(function() {
+			bigImage = $("#bigImage");
+
+			$(".image-thumbnail").click(function() {
+				currentImageSrc = $(this).attr("src");
+				currentImageIndex = $(this).attr("index");
+
+				bigImage.attr("src", currentImageSrc);
+				bigImage.attr("index", currentImageIndex);
+			});
+
+			bigImage.click(function() {
+				imageIndex = parseInt(bigImage.attr("index"));
+				$("#carouselExampleIndicators").carousel(imageIndex);
+
+				$("#carouselModal").modal("show");
+			});
+		});
+	</script>
+
 </body>
+
 
 </html>
