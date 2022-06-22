@@ -13,15 +13,19 @@
 		<div class="row">
 			<div class="col-sm">
 				<div>
-					<img id="bigImage" th:src="@{${product.mainImagePath}}" index="0" th:title="${product.name}" th:alt="${product.name}"
-						class="img-fluid">
+					<img id="bigImage" th:src="@{${product.mainImagePath}}" index="0" th:title="${product.name}"
+						th:alt="${product.name}" class="img-fluid">
 				</div>
 				<div class="row justify-content-center mt-3">
 					<div>
-						<img th:src="@{${product.mainImagePath}}" index="0" class="image-thumbnail border border-secondary m-1 p-1" th:alt="${product.name}" height="50">
+						<img th:src="@{${product.mainImagePath}}" index="0"
+							class="image-thumbnail border border-secondary m-1 p-1" th:alt="${product.name}"
+							height="50">
 					</div>
 					<th:block th:each="extraImage, status : ${product.images}">
-						<img th:src="@{${extraImage.imagePath}}" th:index="${status.count}" class="image-thumbnail border border-secondary m-1 p-1" th:alt="${extraImage.name}" height="50">
+						<img th:src="@{${extraImage.imagePath}}" th:index="${status.count}"
+							class="image-thumbnail border border-secondary m-1 p-1" th:alt="${extraImage.name}"
+							height="50">
 					</th:block>
 				</div>
 			</div>
@@ -34,16 +38,20 @@
 				</div>
 				<div>
 					List Price:
-					
 					<b th:if="${product.discountPercent <= 0}" class="text-danger ">
-						$[[${product.price}]]
+						<div th:replace="product/product_card :: price_fragment(${product.price})"></div>
 					</b>
-					<del class="text-secondary" th:if="${product.discountPercent > 0}">$[[${product.price}]]</del>
+					<del class="text-secondary" th:if="${product.discountPercent > 0}">
+						<div th:replace="product/product_card :: price_fragment(${product.price})"></div>
+					</del>
 				</div>
 				<div th:if="${product.discountPercent > 0}">
 					Price:
-					<b class="text-danger ">$[[${product.discountPrice}]]</b>
-					<span>([[${product.discountPercent}]]% off)</span>
+					<b class="text-danger ">
+						<div th:replace="product/product_card :: price_fragment(${product.discountPrice})"></div>
+					</b>
+					<span>([[${#numbers.formatDecimal(product.discountPercent, 1,
+						THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]% off)</span>
 				</div>
 				<div>&nbsp;</div>
 				<div th:utext="${product.shortDescription}"></div>
@@ -93,10 +101,10 @@
 	<div th:replace="navigation :: footer_menu"></div>
 
 	<script>
-		$(document).ready(function() {
+		$(document).ready(function () {
 			bigImage = $("#bigImage");
 
-			$(".image-thumbnail").click(function() {
+			$(".image-thumbnail").click(function () {
 				currentImageSrc = $(this).attr("src");
 				currentImageIndex = $(this).attr("index");
 
@@ -104,7 +112,7 @@
 				bigImage.attr("index", currentImageIndex);
 			});
 
-			bigImage.click(function() {
+			bigImage.click(function () {
 				imageIndex = parseInt(bigImage.attr("index"));
 				$("#carouselExampleIndicators").carousel(imageIndex);
 
