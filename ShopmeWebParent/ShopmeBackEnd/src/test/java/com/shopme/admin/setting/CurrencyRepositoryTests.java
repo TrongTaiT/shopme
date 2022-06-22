@@ -42,4 +42,13 @@ public class CurrencyRepositoryTests {
 		assertThat(iterable).size().isGreaterThan(0);
 	}
 
+	@Test
+	public void testListAllOrderByNameAsc() {
+		List<Currency> currencies = repo.findAllByOrderByNameAsc();
+
+		currencies.forEach(System.out::println);
+
+		assertThat(currencies.size()).isGreaterThan(0);
+	}
+
 }

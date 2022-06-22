@@ -34,6 +34,12 @@ public class Currency {
 		this.code = code;
 	}
 
+	// inherited
+	@Override
+	public String toString() {
+		return name + " - " + code + " - " + symbol;
+	}
+
 	// getters && setters
 	public Integer getId() {
 		return id;
