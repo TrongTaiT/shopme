@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: page_head(${pageTitle})"></head>
+
+<body>
+	<div th:replace="navigation :: header_menu"></div>
+
+	<div class="container">
+		<div th:replace="breadcrumb :: content"></div>
+
+		<div class="row">
+			<div class="col-sm">
+				<div>
+					<img th:src="@{${product.mainImagePath}}" th:title="${product.name}" th:alt="${product.name}"
+						class="img-fluid">
+				</div>
+			</div>
+			<div class="col-sm">
+				<div>
+					<h2>[[${product.name}]]</h2>
+				</div>
+				<div>
+					<span>Brand: [[${product.brand.name}]]</span>
+				</div>
+				<div>
+					List Price:
+					<b th:if="${product.discountPercent <= 0}" class="text-danger ">
+						$[[${product.price}]]
+					</b>
+					<del class="text-secondary" th:if="${product.discountPercent > 0}">$[[${product.price}]]</del>
+				</div>
+				<div th:if="${product.discountPercent > 0}">
+					Price:
+					<b class="text-danger ">$[[${product.discountPrice}]]</b>
+					<span>([[${product.discountPercent}]]% off)</span>
+				</div>
+				<div>&nbsp;</div>
+				<div th:utext="${product.shortDescription}"></div>
+			</div>
+			<div class="col-sm-2">
+				<div>
+					<span th:if="${product.inStock == true}" class="text-success">In Stock</span>
+					<span th:if="${product.inStock == false}" class="text-danger">Out of Stock</span>
+				</div>
+				<div class="my-3">
+					<input type="text" size="5" value="1">
+				</div>
+				<div>
+					<input type="button" value="Add to Cart" class="btn btn-primary">
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<hr>
+				<div>
+					<h3>Product Description:</h3>
+				</div>
+				<div th:utext="${product.fullDescription}"></div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<hr>
+				<div>
+					<h3>Product Detail:</h3>
+				</div>
+				<th:block th:each="detail : ${product.details}">
+					<div>
+						<b>[[${detail.name}]]</b>
+						<span>[[${detail.value}]]</span>
+					</div>
+				</th:block>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="navigation :: footer_menu"></div>
+</body>
+
+</html>

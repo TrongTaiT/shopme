@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.shopme.category.CategoryService;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Product;
+import com.shopme.common.exception.CategoryNotFoundException;
+import com.shopme.common.exception.ProductNotFoundException;
 
 @Controller
 public class ProductController {
@@ -21,7 +23,7 @@ public class ProductController {
 
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	@GetMapping("/c/{category_alias}")
 	public String viewCategoryFirstPage( //
 			Model model, //
@@ -36,35 +38,57 @@ public class ProductController {
 			@PathVariable("category_alias") String alias, //
 			@PathVariable("pageNum") int pageNum) //
 	{
-		Category category = categoryService.getCategory(alias);
+		try {
+			Category category = categoryService.getCategory(alias);
 
-		if (category == null) {
+			List<Category> listCategoryParents = categoryService.getCategoryParents(category);
+
+			Page<Product> pageProducts = productService.listByCategory(pageNum, category.getId());
+			List<Product> listProducts = pageProducts.getContent();
+
+			long countStart = ProductService.PRODUCT_PER_PAGE * pageNum + 1;
+			long endCount = countStart + ProductService.PRODUCT_PER_PAGE - 1;
+			if (endCount > pageProducts.getTotalElements()) {
+				endCount = pageProducts.getTotalElements();
+			}
+
+			model.addAttribute("currentPage", pageNum);
+			model.addAttribute("countStart", countStart);
+			model.addAttribute("endCount", endCount);
+			model.addAttribute("totalPages", pageProducts.getTotalPages());
+			model.addAttribute("totalItems", pageProducts.getTotalElements());
+
+			model.addAttribute("listProducts", listProducts);
+			model.addAttribute("listCategoryParents", listCategoryParents);
+			model.addAttribute("category", category);
+			model.addAttribute("pageTitle", category.getName());
+
+			return "product/products_by_category";
+		} catch (CategoryNotFoundException e) {
+			e.printStackTrace();
 			return "error/404";
 		}
+	}
 
-		List<Category> listCategoryParents = categoryService.getCategoryParents(category);
+	@GetMapping("/p/{product_alias}")
+	public String viewProductDetail( //
+			Model model, //
+			@PathVariable("product_alias") String alias) //
+	{
+		try {
+			Product product = productService.getProduct(alias);
 
-		Page<Product> pageProducts = productService.listByCategory(pageNum, category.getId());
-		List<Product> listProducts = pageProducts.getContent();
-		
-		long countStart = ProductService.PRODUCT_PER_PAGE * pageNum + 1;
-		long endCount = countStart + ProductService.PRODUCT_PER_PAGE - 1;
-		if (endCount > pageProducts.getTotalElements()) {
-			endCount = pageProducts.getTotalElements();
+			List<Category> listCategoryParents = //
+					categoryService.getCategoryParents(product.getCategory());
+
+			model.addAttribute("product", product);
+			model.addAttribute("listCategoryParents", listCategoryParents);
+			model.addAttribute("pageTitle", product.getShortName());
+
+			return "product/product_detail";
+		} catch (ProductNotFoundException e) {
+			return "error/404";
 		}
-		
-		model.addAttribute("currentPage", pageNum);
-		model.addAttribute("countStart", countStart);
-		model.addAttribute("endCount", endCount);
-		model.addAttribute("totalPages", pageProducts.getTotalPages());
-		model.addAttribute("totalItems", pageProducts.getTotalElements());
-		
-		model.addAttribute("listProducts", listProducts);
-		model.addAttribute("listCategoryParents", listCategoryParents);
-		model.addAttribute("category", category);
-		model.addAttribute("pageTitle", category.getName());
-
-		return "products_by_category";
 	}
 
 }

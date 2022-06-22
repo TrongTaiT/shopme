@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="row">
-			<div th:each="cat : ${listNoChildrenCategories}" class="my-3 mx-1" style="max-width: 100px;">
+			<div th:each="cat : ${listNoChildrenCategories}" class="my-3 mx-1" style="max-width: 80px;">
 				<a th:href="@{'/c/' + ${cat.alias}}" class="text-decoration-none">
 					<div class="card h-100">
 						<img class="card-img-top mx-auto mt-2" th:src="@{${cat.imagePath}}" th:alt="${cat.name}">
