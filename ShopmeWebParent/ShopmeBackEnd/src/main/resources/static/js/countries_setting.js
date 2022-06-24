@@ -49,10 +49,15 @@ function deleteCountry() {
 
     url = contextPath + "countries/delete/" + countryId;
 
-    $.get(url, function (responseJSON) {
+    $.ajax({
+        type: 'DELETE',
+        url: url,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(csrfHeaderName, csrfValue)
+        }
+    }).done(function () {
         $("#dropDownCountries option[value='" + optionValue + "']").remove();
         changeFormStateToNew();
-    }).done(function () {
         buttonLoad.val("Refresh Country List");
         showToastMessage("The country has been deleted");
     }).fail(function () {
