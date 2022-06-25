@@ -67,6 +67,8 @@ function deleteState() {
 }
 
 function updateState() {
+	if (!validateFormState()) return;
+
 	url = contextPath + "states/save";
 	stateId = dropDownStates.val();
 	stateName = fieldStateName.val();
@@ -88,13 +90,24 @@ function updateState() {
 	}).done(function(stateId) {
 		$("#dropDownStates option:selected").text(stateName);
 		showToastMessage("The state has been updated");
-		changeFormStateToNewCountry();
+		changeFormStateToSelectedState();
 	}).fail(function() {
 		showToastMessage("ERROR: Could not connect to server or server encountered an error");
 	});	
 }
 
+function validateFormState() {
+	formState = document.getElementById("formState");
+	if (!formState.checkValidity()) {
+		formState.reportValidity();
+		return false;
+	}
+	return true;
+}
+
 function addState() {
+	if (!validateFormState()) return;
+
 	url = contextPath + "states/save";
 	stateName = fieldStateName.val();
 	
@@ -114,6 +127,7 @@ function addState() {
 		contentType: 'application/json'
 	}).done(function(stateId) {
 		selectNewlyAddedState(stateId, stateName);
+		changeFormStateToSelectedState();
 		showToastMessage("The new state has been added");
 	}).fail(function() {
 		showToastMessage("ERROR: Could not connect to server or server encountered an error");
