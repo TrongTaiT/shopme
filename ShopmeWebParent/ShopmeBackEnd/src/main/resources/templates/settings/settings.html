@@ -2,6 +2,7 @@
 <html xmlns:th="http://www:thymeleaf.org">
 
 <head>
+
     <head th:replace="fragments :: page_head(title = 'Site Settings', remove = 'tag')"></head>
     <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
     <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
@@ -57,10 +58,10 @@
                 <div th:replace="settings/states :: content"></div>
             </div>
             <div class="tab-pane p-3" id="mailServer" role="tabpanel">
-                <h2>Mail Server</h2>
+                <div th:replace="settings/mail_server :: content"></div>
             </div>
             <div class="tab-pane p-3" id="mailTemplates" role="tabpanel">
-                <h2>Mail Templates</h2>
+                <div th:replace="settings/mail_templates/mail_templates :: content"></div>
             </div>
             <div class="tab-pane p-3" id="payment" role="tabpanel">
                 <h2>Payment</h2>
@@ -69,7 +70,8 @@
 
     </div>
 
-    <div class="toast justify-content-center d-flex" role="alert" aria-live="polite" aria-atomic="true" data-delay="3000">
+    <div class="toast justify-content-center d-flex" role="alert" aria-live="polite" aria-atomic="true"
+        data-delay="3000">
         <div role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-body">
                 <span id="toastMessage"></span>
@@ -84,6 +86,10 @@
         contextPath = "[[@{/}]]";
         var csrfHeaderName = "[[${_csrf.headerName}]]";
         var csrfValue = "[[${_csrf.token}]]";
+
+        $(document).ready(function () {
+            $("#customerVerificationContent").richText();
+        });
 
     </script>
     <script th:src="@{/js/common_form.js}"></script>

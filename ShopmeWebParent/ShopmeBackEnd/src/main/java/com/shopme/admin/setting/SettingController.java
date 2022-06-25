@@ -53,7 +53,7 @@ public class SettingController {
 
 		saveSiteLogo(multipartFile, settingBag);
 		saveCurrencySymbol(request, settingBag);
-		
+
 		updateSettingValuesFromForm(request, settingBag.list());
 
 		ra.addFlashAttribute("message", "General settings have been saved.");
@@ -91,8 +91,34 @@ public class SettingController {
 				setting.setValue(value);
 			}
 		}
-		
+
 		service.saveAll(listSettings);
+	}
+
+	@PostMapping("/settings/save_mail_server")
+	public String saveMailServerSettings( //
+			HttpServletRequest request, //
+			RedirectAttributes ra) //
+	{
+		List<Setting> mailServerSettings = service.getMailServerSettings();
+		updateSettingValuesFromForm(request, mailServerSettings);
+
+		ra.addFlashAttribute("message", "Mail server settings have been saved");
+
+		return "redirect:/settings#mailServer";
+	}
+
+	@PostMapping("/settings/save_mail_templates")
+	public String saveMailTemplateSettings( //
+			HttpServletRequest request, //
+			RedirectAttributes ra) //
+	{
+		List<Setting> mailTemplateSettings = service.getMailTemplateSettings();
+		updateSettingValuesFromForm(request, mailTemplateSettings);
+
+		ra.addFlashAttribute("message", "Mail template settings have been saved");
+
+		return "redirect:/settings#mailTemplates";
 	}
 
 }
