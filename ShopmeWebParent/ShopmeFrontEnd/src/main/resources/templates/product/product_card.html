@@ -10,11 +10,11 @@
                 <img class="card-img-top mx-auto w-75 mt-2" th:alt="${product.name}"
                     th:src="@{${product.mainImagePath}}" />
                 <div class="card-body">
-                    <h4 class="card-title m-0 fs-5">
+                    <h6 class="card-title m-0 fs-5">
                         [[${product.shortName}]]
-                    </h4>
+                    </h6>
                 </div>
-                <div class="card-footer fw-bold">
+                <div class="card-footer fw-bold text-center">
                     <b th:if="${product.discountPercent <= 0}" class="text-danger ">
                         <div th:replace="product/product_card :: price_fragment(${product.price})"></div>
                     </b>

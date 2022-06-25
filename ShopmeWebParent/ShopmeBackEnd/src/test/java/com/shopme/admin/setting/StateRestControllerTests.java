@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shopme.admin.setting.state.StateRepository;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.State;
 

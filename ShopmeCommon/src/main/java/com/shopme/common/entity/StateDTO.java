@@ -1,4 +1,4 @@
-package com.shopme.admin.setting;
+package com.shopme.common.entity;
 
 public class StateDTO {
 

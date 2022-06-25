@@ -1,4 +1,4 @@
-package com.shopme.admin.setting;
+package com.shopme.admin.setting.state;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.State;
+import com.shopme.common.entity.StateDTO;
 
 @RestController
 public class StateRestController {

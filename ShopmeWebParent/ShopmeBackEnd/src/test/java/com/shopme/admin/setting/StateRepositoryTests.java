@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
+import com.shopme.admin.setting.state.StateRepository;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.State;
 
