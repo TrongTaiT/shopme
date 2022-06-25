@@ -54,7 +54,7 @@ public class Customer {
 	private String postalCode;
 
 	@Column(name = "created_time")
-	private Date createdTime = new Date();
+	private Date createdTime;
 
 	@Column(nullable = false)
 	private Boolean enabled;
@@ -74,6 +74,11 @@ public class Customer {
 				+ ", addressLine2=" + addressLine2 + ", city=" + city + ", state=" + state + ", postalCode="
 				+ postalCode + ", createdTime=" + createdTime + ", enabled=" + enabled + ", verificationCode="
 				+ verificationCode + ", country=" + country + "]";
+	}
+	
+	// transient fields
+	public String getFullname() {
+		return this.firstName + " " + this.lastName;
 	}
 
 	// getters && setters
