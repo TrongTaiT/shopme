@@ -8,6 +8,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -72,18 +73,28 @@ public class CustomerController {
 		helper.setFrom(emailSettings.getFromAddress(), emailSettings.getSenderName());
 		helper.setTo(toAddress);
 		helper.setSubject(subject);
-		
+
 		content = content.replace("[[name]]", customer.getFullname());
-		
+
 		String verifyURL = Utility.getSiteURL(request) + "/verify?code=" + customer.getVerificationCode();
 		content = content.replace("[[URL]]", verifyURL);
-		
+
 		helper.setText(content, true);
-		
+
 		mailSender.send(message);
-		
+
 		System.out.println("to address: " + toAddress);
 		System.out.println("verify url: " + verifyURL);
+	}
+
+	@GetMapping("/verify")
+	public String verifyAccount( //
+			@Param("code") String code, //
+			Model model) //
+	{
+		boolean verified = customerService.verify(code);
+		
+		return "register/" + (verified ? "verify_success" : "verify_fail");
 	}
 
 }
