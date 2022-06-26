@@ -48,8 +48,7 @@
 			th:href="@{${entityURL} + '/enabled/false'}" th:title="'Disable this ' + ${entityName}"></a>
 
 		<a th:if="${enabled == false}" class="fas fa-circle fa-2x icon-dark" th:href="@{${entityURL} + '/enabled/true'}"
-			th:title="'Enable thi
-			s ' + ${entityName}"></a>
+			th:title="'Enable this ' + ${entityName}"></a>
 	</div>
 
 	<div th:fragment="user_photos" th:remove="tag">
@@ -106,11 +105,11 @@
 			Filter: &nbsp;
 			<input type="search" name="keyword" th:value="${keyword}" class="form-control" required>
 			&nbsp;&nbsp;
-			<button type="submit" class="btn btn-primary">
+			<button type="submit" class="btn btn-primary mt-3 mt-sm-0">
 				<i class="fa-solid fa-magnifying-glass"></i>
 			</button>
 			&nbsp;&nbsp;
-			<butotn type="button" class="btn btn-secondary" onclick="clearFilter();">
+			<butotn type="button" class="btn btn-secondary mt-3 mt-sm-0" onclick="clearFilter();">
 				<i class="fa-solid fa-filter-circle-xmark"></i>
 			</butotn>
 		</form>
