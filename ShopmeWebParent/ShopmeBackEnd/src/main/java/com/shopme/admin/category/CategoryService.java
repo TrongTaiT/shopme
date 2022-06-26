@@ -49,7 +49,7 @@ public class CategoryService {
 		Page<Category> pageCategories = null;
 		if (keyword != null) {
 			pageable = PageRequest.of(pageNum - 1, CATEGORIES_PER_PAGE, sort);
-			pageCategories = repo.search(keyword, pageable);
+			pageCategories = repo.findAll(keyword, pageable);
 		} else {
 			pageable = PageRequest.of(pageNum - 1, ROOT_CATEGORIES_PER_PAGE, sort);
 			pageCategories = repo.findRootCategories(pageable);

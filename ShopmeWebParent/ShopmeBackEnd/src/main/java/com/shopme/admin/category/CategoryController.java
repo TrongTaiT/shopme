@@ -48,7 +48,6 @@ public class CategoryController {
 
 		CategoryPageInfo pageInfo = new CategoryPageInfo();
 		List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir, keyword);
-		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
 		int categoriesPerPage = CategoryService.ROOT_CATEGORIES_PER_PAGE;
 		if (keyword != null) {
@@ -72,7 +71,6 @@ public class CategoryController {
 		model.addAttribute("moduleURL", "/categories");
 
 		model.addAttribute("listCategories", listCategories);
-		model.addAttribute("reverseSortDir", reverseSortDir);
 
 		return "categories/categories";
 	}

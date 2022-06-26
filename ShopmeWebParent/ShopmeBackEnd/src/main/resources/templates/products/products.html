@@ -58,11 +58,11 @@
                         <th th:replace="fragments :: column_link('name', 'Product Name', 'none')"></th>
 
                         <th class="hideable-column">
-                        <th th:replace="fragments :: column_link('id', 'ID', 'tag')"></th>
+                        <th th:replace="fragments :: column_link('brand', 'Brand', 'tag')"></th>
                         </th>
 
                         <th class="hideable-column">
-                        <th th:replace="fragments :: column_link('brand', 'Brand', 'tag')"></th>
+                            <th th:replace="fragments :: column_link('category', 'Category', 'tag')"></th>
                         </th>
 
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">

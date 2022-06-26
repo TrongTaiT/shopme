@@ -6,12 +6,11 @@ import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.common.entity.Product;
 import com.shopme.common.exception.ProductNotFoundException;
 
@@ -28,27 +27,27 @@ public class ProductService {
 		return (List<Product>) repo.findAll();
 	}
 
-	public Page<Product> listByPage(int pageNum, String sortField, String sortDir, //
-			String keyword, Integer categoryId) {
-		Sort sort = Sort.by(sortField);
-		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-		
-		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
+	public void listByPage(int pageNum, Integer categoryId, PagingAndSortingHelper helper) {
+		Pageable pageable = helper.createPageable(pageNum, PRODUCTS_PER_PAGE);
+		String keyword = helper.getKeyword();
+		Page<Product> page = null;
 
 		if (categoryId != null && categoryId > 0) {
 			String categoryIdMatch = "-" + String.valueOf(categoryId) + "-";
 			if (keyword != null && !keyword.isEmpty()) {
-				return repo.searchInCategory(categoryId, categoryIdMatch, keyword, pageable);
+				page = repo.searchInCategory(categoryId, categoryIdMatch, keyword, pageable);
 			} else {
-				return repo.findAllInCategory(categoryId, categoryIdMatch, pageable);
-			}		
-		}
-		
-		if (keyword != null && !keyword.isEmpty()) {
-			return repo.findAll(keyword, pageable);
+				page = repo.findAllInCategory(categoryId, categoryIdMatch, pageable);
+			}
+		} else {
+			if (keyword != null && !keyword.isEmpty()) {
+				page = repo.findAll(keyword, pageable);
+			} else {
+				page = repo.findAll(pageable);
+			}
 		}
 
-		return repo.findAll(pageable);
+		helper.updateModelAttributes(pageNum, page);
 	}
 
 	public Product save(Product product) {
@@ -67,14 +66,14 @@ public class ProductService {
 
 		return repo.save(product);
 	}
-	
+
 	public void saveProductPrice(Product productInForm) throws ProductNotFoundException {
 		try {
 			Product productInDB = repo.findById(productInForm.getId()).get();
 			productInDB.setCost(productInForm.getCost());
 			productInDB.setPrice(productInForm.getPrice());
 			productInDB.setDiscountPercent(productInForm.getDiscountPercent());
-			
+
 			repo.save(productInDB);
 		} catch (NoSuchElementException e) {
 			throw new ProductNotFoundException("Could not find any Product with ID " + productInForm.getId());
