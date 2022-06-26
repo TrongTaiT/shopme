@@ -50,8 +50,13 @@ public class CategoryController {
 		List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir, keyword);
 		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
-		long startCount = (pageNum - 1) * CategoryService.ROOT_CATEGORIES_PER_PAGE + 1;
-		long endCount = startCount + CategoryService.ROOT_CATEGORIES_PER_PAGE - 1;
+		int categoriesPerPage = CategoryService.ROOT_CATEGORIES_PER_PAGE;
+		if (keyword != null) {
+			categoriesPerPage = CategoryService.CATEGORIES_PER_PAGE;
+		}
+
+		long startCount = (pageNum - 1) * categoriesPerPage + 1;
+		long endCount = startCount + categoriesPerPage - 1;
 		if (endCount > pageInfo.getTotalElements()) {
 			endCount = pageInfo.getTotalElements();
 		}
@@ -64,12 +69,12 @@ public class CategoryController {
 		model.addAttribute("sortField", "name");
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("keyword", keyword);
+		model.addAttribute("moduleURL", "/categories");
 
 		model.addAttribute("listCategories", listCategories);
 		model.addAttribute("reverseSortDir", reverseSortDir);
 
 		return "categories/categories";
-
 	}
 
 	@GetMapping("/categories/new")

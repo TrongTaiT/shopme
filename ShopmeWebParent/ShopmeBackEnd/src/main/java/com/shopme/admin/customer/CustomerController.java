@@ -38,7 +38,7 @@ public class CustomerController {
 		Page<Customer> page = customerService.listByPage(pageNum, sortField, sortDir, keyword);
 		List<Customer> listCustomers = page.getContent();
 
-		long startCount = pageNum * CustomerService.CUSTOMER_PER_PAGE + 1;
+		long startCount = (pageNum - 1) * CustomerService.CUSTOMER_PER_PAGE + 1;
 		long endCount = startCount + CustomerService.CUSTOMER_PER_PAGE - 1;
 		if (endCount > page.getTotalElements()) {
 			endCount = page.getTotalElements();
@@ -53,6 +53,7 @@ public class CustomerController {
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("listCustomers", listCustomers);
+		model.addAttribute("moduleURL", "/customers");
 
 		return "customers/customers";
 	}

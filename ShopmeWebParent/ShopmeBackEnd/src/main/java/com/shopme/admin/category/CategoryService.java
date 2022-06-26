@@ -23,6 +23,7 @@ import com.shopme.common.exception.CategoryNotFoundException;
 @Transactional
 public class CategoryService {
 	public static final int ROOT_CATEGORIES_PER_PAGE = 1;
+	public static final int CATEGORIES_PER_PAGE = 4;
 
 	@Autowired
 	private CategoryRepository repo;
@@ -43,12 +44,14 @@ public class CategoryService {
 			sort = sort.descending();
 		}
 
-		Pageable pageable = PageRequest.of(pageNum - 1, ROOT_CATEGORIES_PER_PAGE, sort);
+		Pageable pageable = null;
 
 		Page<Category> pageCategories = null;
-		if (keyword != null && !keyword.isEmpty()) {
+		if (keyword != null) {
+			pageable = PageRequest.of(pageNum - 1, CATEGORIES_PER_PAGE, sort);
 			pageCategories = repo.search(keyword, pageable);
 		} else {
+			pageable = PageRequest.of(pageNum - 1, ROOT_CATEGORIES_PER_PAGE, sort);
 			pageCategories = repo.findRootCategories(pageable);
 		}
 		

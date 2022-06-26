@@ -50,23 +50,23 @@
                 <thead class="thead-dark">
                     <tr>
                         <th class="hideable-column">
-                        <th th:replace="fragments :: column_link('/products', 'id', 'ID', 'tag')"></th>
+                        <th th:replace="fragments :: column_link('id', 'ID', 'tag')"></th>
                         </th>
 
                         <th>Main Image</th>
 
-                        <th th:replace="fragments :: column_link('/products', 'name', 'Product Name', 'none')"></th>
+                        <th th:replace="fragments :: column_link('name', 'Product Name', 'none')"></th>
 
                         <th class="hideable-column">
-                        <th th:replace="fragments :: column_link('/products', 'id', 'ID', 'tag')"></th>
+                        <th th:replace="fragments :: column_link('id', 'ID', 'tag')"></th>
                         </th>
 
                         <th class="hideable-column">
-                        <th th:replace="fragments :: column_link('/products', 'brand', 'Brand', 'tag')"></th>
+                        <th th:replace="fragments :: column_link('brand', 'Brand', 'tag')"></th>
                         </th>
 
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                            <th th:replace="fragments :: column_link('/products', 'enabled', 'Enabled', 'none')"></th>
+                            <th th:replace="fragments :: column_link('enabled', 'Enabled', 'none')"></th>
                         </th:block>
 
                         <th></th>
@@ -93,18 +93,20 @@
                             </td>
                         </th:block>
                         <td class="row" style="max-width: 150px;">
-                            <div class="col-lg-2 ">
+                            <div class="col-md-2 ">
                                 <a th:href="@{'/products/detail/' + ${product.id}}"
                                     class="link-detail fas fa-file-alt fa-2x icon-green"
                                     title="View detail of this product"></a>
                             </div>
-                            <div class="col-lg-2">
+                            &nbsp;
+                            <div class="col-md-2">
                                 <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
                                     <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})">
                                     </div>
                                 </th:block>
                             </div>
-                            <div class="col-lg-2">
+                            &nbsp;
+                            <div class="col-md-2">
                                 <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                                     <div
                                         th:replace="fragments :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)">
@@ -135,8 +137,8 @@
                         &nbsp;
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
                             <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})"></div>
-                            &nbsp;
                         </th:block>
+                        &nbsp;
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                             <div
                                 th:replace="fragments :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)">
@@ -147,7 +149,7 @@
             </div>
         </div>
 
-        <div th:replace="fragments :: pagination('/products', 'products')"></div>
+        <div th:replace="fragments :: pagination('products')"></div>
 
         <div th:replace="fragments :: footer"></div>
 

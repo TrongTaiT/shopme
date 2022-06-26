@@ -86,8 +86,9 @@ public class CustomerService {
 			} else {
 				customerInForm.setPassword(customerInDB.getPassword());
 			}
-			
+			customerInForm.setCreatedTime(customerInDB.getCreatedTime());
 			customerInForm.setEnabled(customerInDB.getEnabled());
+			customerInForm.setVerificationCode(customerInDB.getVerificationCode());
 			
 			return customerRepo.save(customerInForm);
 		} catch (NoSuchElementException e) {
