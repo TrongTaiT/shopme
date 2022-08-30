@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -62,6 +64,10 @@ public class Customer {
 	@Column(name = "verification_code", length = 64)
 	private String verificationCode;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "authentication_type", length = 10)
+	private AuthenticationType authenticationType;
+
 	// constructors
 	public Customer() {
 	}
@@ -75,7 +81,7 @@ public class Customer {
 				+ postalCode + ", createdTime=" + createdTime + ", enabled=" + enabled + ", verificationCode="
 				+ verificationCode + ", country=" + country + "]";
 	}
-	
+
 	// transient fields
 	public String getFullname() {
 		return this.firstName + " " + this.lastName;
@@ -200,6 +206,14 @@ public class Customer {
 
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
+	}
+
+	public AuthenticationType getAuthenticationType() {
+		return authenticationType;
+	}
+
+	public void setAuthenticationType(AuthenticationType authenticationType) {
+		this.authenticationType = authenticationType;
 	}
 
 }

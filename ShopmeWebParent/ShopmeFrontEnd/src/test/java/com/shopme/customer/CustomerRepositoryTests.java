@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import com.shopme.common.entity.AuthenticationType;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Customer;
 
@@ -41,7 +42,7 @@ public class CustomerRepositoryTests {
 
 		assertThat(savedCustomer.getId()).isGreaterThan(0);
 	}
-	
+
 	@Test
 	public void testCreateCustomer2() {
 		Customer customer = new Customer();
@@ -61,28 +62,28 @@ public class CustomerRepositoryTests {
 
 		assertThat(savedCustomer.getId()).isGreaterThan(0);
 	}
-	
+
 	@Test
 	public void testListAll() {
 		Iterable<Customer> iterable = repo.findAll();
-		
+
 		iterable.forEach(System.out::println);
-		
+
 		assertThat(iterable).size().isGreaterThan(0);
 	}
-	
+
 	@Test
 	public void testFindById() {
 		Integer id = 1;
 		Optional<Customer> findById = repo.findById(id);
-		
+
 		assertThat(findById).isPresent();
 	}
-	
+
 	@Test
 	public void testUpdateCustomer() {
 		Integer id = 1;
-		
+
 		Customer customer = repo.findById(id).get();
 		customer.setEmail("nguyentrongtai@gmail.com");
 		customer.setPassword("trongtai6");
@@ -98,49 +99,68 @@ public class CustomerRepositoryTests {
 		customer.setVerificationCode("trongtaipro");
 
 		Customer savedCustomer = repo.save(customer);
-		
+
 		Customer customerInDB = repo.findById(id).get();
 
 		assertThat(savedCustomer).isEqualTo(customerInDB);
 	}
-	
+
 	@Test
 	public void testFinByEmail() {
 		String email = "nguyentrongtai@gmail.com";
-		
+
 		Customer findByEmail = repo.findByEmail(email);
-		
+
 		assertThat(findByEmail).isNotNull();
 	}
-	
+
 	@Test
 	public void testFindByVerificationCode() {
 		String verificationCode = "trongtaipro";
-		
+
 		Customer findByVerificationCode = repo.findByVerificationCode(verificationCode);
-		
+
 		assertThat(findByVerificationCode).isNotNull();
 	}
-	
+
 	@Test
 	public void testUpdateEnable() {
 		Integer id = 1;
-		
+
 		repo.enable(id);
-		
+
 		Customer customer = repo.findById(id).get();
-		
+
 		assertThat(customer.getEnabled()).isTrue();
 	}
-	
+
 	@Test
 	public void testDeleteCustomer() {
 		Integer id = 2;
 		repo.deleteById(id);
-		
+
 		Optional<Customer> findById = repo.findById(id);
-		
+
 		assertThat(findById).isEmpty();
+	}
+
+	@Test
+	public void testEnableCustomer() {
+		Integer customerId = 1;
+		repo.enable(customerId);
+
+		Customer customer = repo.findById(customerId).get();
+
+		assertThat(customer.getEnabled()).isTrue();
+	}
+
+	@Test
+	public void testUpdateAuthenticationType() {
+		Integer id = 1;
+		repo.updateAuthenticationType(id, AuthenticationType.DATABASE);
+
+		Customer customer = repo.findById(id).get();
+		assertThat(customer.getAuthenticationType()).isEqualTo(AuthenticationType.DATABASE);
 	}
 
 }
