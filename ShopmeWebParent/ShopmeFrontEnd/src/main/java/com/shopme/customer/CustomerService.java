@@ -2,6 +2,7 @@ package com.shopme.customer;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.shopme.common.entity.AuthenticationType;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Customer;
+import com.shopme.common.exception.CustomerNotFoundException;
 import com.shopme.setting.CountryRepository;
 
 import net.bytebuddy.utility.RandomString;
@@ -107,6 +109,31 @@ public class CustomerService {
 
 			String lastName = name.replaceFirst(firstName + " ", "");
 			customer.setLastName(lastName);
+		}
+	}
+
+	public Customer update(Customer customerInForm) throws CustomerNotFoundException {
+		try {
+			Customer customerInDB = customerRepo.findById(customerInForm.getId()).get();
+
+			if (customerInDB.getAuthenticationType().equals(AuthenticationType.DATABASE)) {
+				if (!customerInForm.getPassword().isEmpty()) {
+					String encodedPassword = passwordEncoder.encode(customerInForm.getPassword());
+					customerInForm.setPassword(encodedPassword);
+				} else {
+					customerInForm.setPassword(customerInDB.getPassword());
+				}
+			} else {
+				customerInForm.setPassword(customerInDB.getPassword());
+			}
+			customerInForm.setCreatedTime(customerInDB.getCreatedTime());
+			customerInForm.setEnabled(customerInDB.getEnabled());
+			customerInForm.setVerificationCode(customerInDB.getVerificationCode());
+			customerInForm.setAuthenticationType(customerInDB.getAuthenticationType());
+			
+			return customerRepo.save(customerInForm);
+		} catch (NoSuchElementException e) {
+			throw new CustomerNotFoundException("Could not find any Customer with ID " + customerInForm.getId());
 		}
 	}
 

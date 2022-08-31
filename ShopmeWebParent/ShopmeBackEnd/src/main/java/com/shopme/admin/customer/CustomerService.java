@@ -74,10 +74,12 @@ public class CustomerService {
 			} else {
 				customerInForm.setPassword(customerInDB.getPassword());
 			}
+			
 			customerInForm.setCreatedTime(customerInDB.getCreatedTime());
 			customerInForm.setEnabled(customerInDB.getEnabled());
 			customerInForm.setVerificationCode(customerInDB.getVerificationCode());
-
+			customerInForm.setAuthenticationType(customerInDB.getAuthenticationType());
+			
 			return customerRepo.save(customerInForm);
 		} catch (NoSuchElementException e) {
 			throw new CustomerNotFoundException("Could not find any Customer with ID " + customerInForm.getId());
