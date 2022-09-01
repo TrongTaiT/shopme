@@ -79,6 +79,7 @@ public class CustomerService {
 			customerInForm.setEnabled(customerInDB.getEnabled());
 			customerInForm.setVerificationCode(customerInDB.getVerificationCode());
 			customerInForm.setAuthenticationType(customerInDB.getAuthenticationType());
+			customerInForm.setResetPasswordToken(customerInDB.getResetPasswordToken());
 			
 			return customerRepo.save(customerInForm);
 		} catch (NoSuchElementException e) {
