@@ -55,8 +55,7 @@
                 <div class="tab-pane p-3 active" id="overview" role="tabpanel">
                     <div th:replace="products/product_overview :: content"></div>
                 </div>
-                <th:block th:if="${#authorization.expression('hasAuthority(''Admin'')')
-					 || #authorization.expression('hasAuthority(''Editor'')')}">
+                <th:block th:if="${isReadOnlyForSalesperson == false}">
                     <div class="tab-pane p-3" id="description" role="tabpanel">
                         <div th:replace="products/product_description :: content"></div>
                     </div>
@@ -75,8 +74,7 @@
                     </div>
                 </th:block>
 
-                <th:block th:unless="${#authorization.expression('hasAuthority(''Admin'')')
-					 || #authorization.expression('hasAuthority(''Editor'')')}">
+                <th:block th:if="${isReadOnlyForSalesperson == true}">
                     <th:block sec:authorize="hasAuthority('Salesperson')">
                         <div class="tab-pane p-3" id="description" role="tabpanel">
                             <div th:replace="products/product_description_read_only :: content"></div>
