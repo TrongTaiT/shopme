@@ -95,7 +95,7 @@ public class Product {
 
 		return "/product-images/" + this.id + "/" + this.mainImage;
 	}
-	
+
 	@Transient
 	public String getShortName() {
 		if (this.name.length() > 70) {
@@ -103,13 +103,21 @@ public class Product {
 		}
 		return name;
 	}
-	
+
 	@Transient
 	public float getDiscountPrice() {
 		if (discountPercent > 0) {
 			return price * (100 - discountPercent) / 100;
 		}
 		return this.price;
+	}
+
+	// constructors
+	public Product() {
+	}
+
+	public Product(Integer id) {
+		this.id = id;
 	}
 
 	// getters && setters
@@ -120,15 +128,15 @@ public class Product {
 	public void setDetails(List<ProductDetail> productDetails) {
 		this.details = productDetails;
 	}
-	
+
 	public void addDetail(String name, String value) {
 		this.details.add(new ProductDetail(name, value, this));
 	}
-	
+
 	public void addDetail(Integer id, String name, String value) {
 		this.details.add(new ProductDetail(id, name, value, this));
 	}
-	
+
 	public Set<ProductImage> getImages() {
 		return images;
 	}
@@ -143,14 +151,14 @@ public class Product {
 
 	public boolean containsImageName(String imageName) {
 		Iterator<ProductImage> iterator = images.iterator();
-		
+
 		while (iterator.hasNext()) {
 			ProductImage image = iterator.next();
 			if (image.getName().equals(imageName)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
