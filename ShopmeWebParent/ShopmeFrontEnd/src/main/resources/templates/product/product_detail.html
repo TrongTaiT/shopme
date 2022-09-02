@@ -57,13 +57,18 @@
 				<div th:utext="${product.shortDescription}"></div>
 			</div>
 			<div class="col-sm-2">
-				<div>
-					<span th:if="${product.inStock == true}" class="text-success">In Stock</span>
-					<span th:if="${product.inStock == false}" class="text-danger">Out of Stock</span>
-				</div>
-				<div th:replace="cart/quantity_control :: quantity_control(1, ${product.id})"></div>
-				<div>
-					<input type="button" value="Add to Cart" class="btn btn-primary">
+				<th:block th:if="${product.inStock == true}">
+					<div>
+						<span class="text-success">In Stock</span>
+					</div>
+					<div th:replace="cart/quantity_control :: quantity_control(1, ${product.id})"></div>
+					<div>
+						<input type="button" id="buttonAddToCart" value="Add to Cart" class="btn btn-primary">
+					</div>
+				</th:block>
+				
+				<div th:if="${product.inStock == false}">
+					<span class="text-danger">Out of Stock</span>
 				</div>
 			</div>
 		</div>
@@ -99,6 +104,11 @@
 	<div th:replace="navigation :: footer_menu"></div>
 
 	<script>
+		contextPath = "[[@{/}]]";
+		productId = "[[${product.id}]]";
+        var csrfHeaderName = "[[${_csrf.headerName}]]";
+        var csrfValue = "[[${_csrf.token}]]";
+
 		$(document).ready(function () {
 			bigImage = $("#bigImage");
 
@@ -118,8 +128,9 @@
 			});
 		});
 	</script>
-    <script th:src="@{/js/common_modal.js}"></script>
+	<script th:src="@{/js/common_modal.js}"></script>
 	<script th:src="@{/js/quantity_control.js}"></script>
+	<script th:src="@{/js/add_to_cart.js}"></script>
 </body>
 
 
