@@ -12,13 +12,16 @@
 			<h1>Your Shopping Cart</h1>
 		</div>
 
-		<div class="row mt-4" th:unless="${#lists.isEmpty(cartItems)}">
+		<div class="row mt-4" th:unless="${#lists.isEmpty(cartItems)}" id="sectionTotal">
 			<div class="col-sm-8">
 				<th:block th:each="item, status : ${cartItems}">
-					<div class="row border rounded p-1 my-2" th:with="product = ${item.product}">
+					<div th:with="product = ${item.product}" th:id="'row' + ${status.count}"
+						class="row border rounded p-1 my-2">
 						<div class="col-1">
-							<div>[[${status.count}]]</div>
-							<a href="" class="fas fa-trash"></a>
+							<div class="divCount">[[${status.count}]]</div>
+							<a th:href="@{'/cart/remove/' + ${product.id}}" th:rowNumber="${status.count}"
+								class="fas fa-trash linkRemove icon-dark"></a>
+
 						</div>
 						<div class="col-3">
 							<img th:src="@{${product.mainImagePath}}" class="img-fluid" alt="">
@@ -43,7 +46,8 @@
 								<span>=&nbsp;</span>
 								<span
 									th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}">[[${CURRENCY_SYMBOL}]]</span>
-								<span class="h4 subtotal" th:id="'subtotal' + ${product.id}">[[${#numbers.formatDecimal(item.subtotal,1,THOUSANDS_POINT_TYPE,
+								<span class="h4 subtotal"
+									th:id="'subtotal' + ${product.id}">[[${#numbers.formatDecimal(item.subtotal,1,THOUSANDS_POINT_TYPE,
 									DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
 								<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}">[[${CURRENCY_SYMBOL}]]</span>
 							</div>
@@ -68,20 +72,20 @@
 			</div>
 		</div>
 
-		<div class="mt-4 text-center" th:if="${#lists.isEmpty(cartItems)}">
+		<div id="sectionEmptyCartMessage" th:class="'mt-4 text-center ' + ${#lists.isEmpty(cartItems) ? '' : 'd-none'}">
 			<h3>You don't have any items yet. Sadge =(</h3>
 			<div>&nbsp;</div>
-			<h4><a th:href="@{/}">Add now</a></h4>
+			<h4><a th:href="@{/}" class="btn btn-primary btn-lg">ADD NOW</a></h4>
 		</div>
 	</div>
 
 	<div th:replace="navigation :: footer_menu"></div>
 	<div th:replace="fragments :: modal_dialog"></div>
 
-	<script>		
+	<script>
 		contextPath = "[[@{/}]]";
-        var csrfHeaderName = "[[${_csrf.headerName}]]";
-        var csrfValue = "[[${_csrf.token}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
 	</script>
 	<script th:src="@{/js/jquery.number.min.js}"></script>
 	<script th:src="@{/js/shopping_cart.js}"></script>
