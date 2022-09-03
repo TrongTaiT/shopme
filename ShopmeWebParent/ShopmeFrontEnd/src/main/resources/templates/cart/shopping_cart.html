@@ -86,6 +86,10 @@
 		contextPath = "[[@{/}]]";
 		var csrfHeaderName = "[[${_csrf.headerName}]]";
 		var csrfValue = "[[${_csrf.token}]]";
+
+		decimalDigits = [[${DECIMAL_DIGITS}]]; // no worry, severside compiled
+		decimalPointType = "[[${DECIMAL_POINT_TYPE}]]";
+		thousandPointType = "[[${THOUSANDS_POINT_TYPE}]]";
 	</script>
 	<script th:src="@{/js/jquery.number.min.js}"></script>
 	<script th:src="@{/js/shopping_cart.js}"></script>
