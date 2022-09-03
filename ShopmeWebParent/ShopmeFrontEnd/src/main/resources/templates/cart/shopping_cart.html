@@ -43,7 +43,7 @@
 								<span>=&nbsp;</span>
 								<span
 									th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}">[[${CURRENCY_SYMBOL}]]</span>
-								<span class="h4">[[${#numbers.formatDecimal(item.subtotal,1,THOUSANDS_POINT_TYPE,
+								<span class="h4 subtotal" th:id="'subtotal' + ${product.id}">[[${#numbers.formatDecimal(item.subtotal,1,THOUSANDS_POINT_TYPE,
 									DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
 								<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}">[[${CURRENCY_SYMBOL}]]</span>
 							</div>
@@ -58,7 +58,7 @@
 				</div>
 				<div class="mt-2">
 					<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}">[[${CURRENCY_SYMBOL}]]</span>
-					<span class="h3">[[${#numbers.formatDecimal(estimatedTotal,1,THOUSANDS_POINT_TYPE,
+					<span class="h3" id="total">[[${#numbers.formatDecimal(estimatedTotal,1,THOUSANDS_POINT_TYPE,
 						DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
 					<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}">[[${CURRENCY_SYMBOL}]]</span>
 				</div>
@@ -76,6 +76,16 @@
 	</div>
 
 	<div th:replace="navigation :: footer_menu"></div>
+	<div th:replace="fragments :: modal_dialog"></div>
+
+	<script>		
+		contextPath = "[[@{/}]]";
+        var csrfHeaderName = "[[${_csrf.headerName}]]";
+        var csrfValue = "[[${_csrf.token}]]";
+	</script>
+	<script th:src="@{/js/jquery.number.min.js}"></script>
+	<script th:src="@{/js/shopping_cart.js}"></script>
+	<script th:src="@{/js/common_modal.js}"></script>
 </body>
 
 </html>
