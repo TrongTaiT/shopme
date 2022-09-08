@@ -76,7 +76,7 @@
                     </th:block>
                     <th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
                         <li class="nav-item">
-                            <a th:href="@{/shipping}" class="nav-link">Shipping</a>
+                            <a th:href="@{/shipping_rates}" class="nav-link">Shipping</a>
                         </li>
                     </th:block>
                     <li class="nav-item" sec:authorize="hasAnyAuthority('Admin', 'Salesperson', 'Shipper')">

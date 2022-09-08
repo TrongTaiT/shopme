@@ -71,7 +71,7 @@
     </div>
 
     <script>
-        moduelURL = "[[@{/brands}]]";
+        moduleURL = "[[@{/brands}]]";
         MAX_FILE_SIZE = 100; // 100KB
 
         $(document).ready(function () {
@@ -105,7 +105,7 @@
         }
 
         function checkNameUnique(form) {
-            url = moduelURL + "/check_name_unique";
+            url = moduleURL + "/check_name_unique";
 
             var params = {
                 id: form.id.value,
