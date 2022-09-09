@@ -55,10 +55,38 @@ public class Address {
 	// inherited
 	@Override
 	public String toString() {
-		return "Address [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber="
-				+ phoneNumber + ", addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2 + ", city=" + city
-				+ ", state=" + state + ", postalCode=" + postalCode + ", customer=" + customer + ", country=" + country
-				+ ", defaultForShipping=" + defaultForShipping + "]";
+		String address = firstName;
+		if (lastName != null && !lastName.isEmpty()) {
+			address += " " + lastName;
+		}
+
+		if (!addressLine1.isBlank()) {
+			address += " || " + addressLine1;
+		}
+
+		if (addressLine2 != null && !addressLine2.isBlank()) {
+			address += ", " + addressLine2;
+		}
+
+		if (!city.isBlank()) {
+			address += ", " + city;
+		}
+
+		if (!state.isBlank()) {
+			address += ", " + state;
+		}
+
+		address += ", " + country.getName();
+
+		if (!postalCode.isBlank()) {
+			address += ". Postal Code: " + postalCode;
+		}
+
+		if (!phoneNumber.isBlank()) {
+			address += ". Phone Number: " + phoneNumber;
+		}
+
+		return address;
 	}
 
 	// getters && setters
@@ -150,7 +178,7 @@ public class Address {
 		this.country = country;
 	}
 
-	public boolean isDefaultForShipping() {
+	public boolean getDefaultForShipping() {
 		return defaultForShipping;
 	}
 

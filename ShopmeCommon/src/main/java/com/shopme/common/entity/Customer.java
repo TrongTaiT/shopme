@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "customers")
@@ -70,6 +71,42 @@ public class Customer {
 
 	@Column(name = "reset_password_token", length = 30)
 	private String resetPasswordToken;
+
+	@Transient
+	public String getAddress() {
+		String address = firstName;
+		if (lastName != null && !lastName.isEmpty()) {
+			address += " " + lastName;
+		}
+
+		if (!addressLine1.isBlank()) {
+			address += " || " + addressLine1;
+		}
+
+		if (addressLine2 != null && !addressLine2.isBlank()) {
+			address += ", " + addressLine2;
+		}
+
+		if (!city.isBlank()) {
+			address += ", " + city;
+		}
+
+		if (!state.isBlank()) {
+			address += ", " + state;
+		}
+
+		address += ", " + country.getName();
+
+		if (!postalCode.isBlank()) {
+			address += ". Postal Code: " + postalCode;
+		}
+
+		if (!phoneNumber.isBlank()) {
+			address += ". Phone Number: " + phoneNumber;
+		}
+
+		return address;
+	}
 
 	// constructors
 	public Customer() {
