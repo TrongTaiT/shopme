@@ -66,7 +66,7 @@ public class AddressController {
 			HttpServletRequest request) //
 	{
 		Customer customer = getAuthenticatedCustomer(request);
-		
+
 		address.setCustomer(customer);
 		addressService.save(address);
 
@@ -74,7 +74,7 @@ public class AddressController {
 
 		return "redirect:/address_book";
 	}
-	
+
 	@GetMapping("/address_book/edit/{id}")
 	public String editAddress(//
 			@PathVariable("id") Integer id, //
@@ -90,14 +90,14 @@ public class AddressController {
 			model.addAttribute("listCountries", listCountries);
 			model.addAttribute("address", address);
 			model.addAttribute("pageTitle", "Edit Address (ID: " + id + ")");
-			
+
 			return "address_book/address_form";
 		} catch (AddressNotFoundException e) {
 			ra.addFlashAttribute("message", e.getMessage());
 			return "redirect:/address_book";
 		}
 	}
-	
+
 	@GetMapping("/address_book/delete/{id}")
 	public String deleteAddress( //
 			@PathVariable("id") Integer id, //
@@ -107,7 +107,7 @@ public class AddressController {
 		try {
 			Customer customer = getAuthenticatedCustomer(request);
 			addressService.delete(id, customer);
-			
+
 			ra.addFlashAttribute("message", "The address with ID " + id + " has been deleted successfully.");
 		} catch (AddressNotFoundException e) {
 			ra.addFlashAttribute("message", e.getMessage());
@@ -115,10 +115,17 @@ public class AddressController {
 
 		return "redirect:/address_book";
 	}
-	
-//	@GetMapping("/address_book/set_default_address/{}")
-//	public String setDefaultAddress() {
-//		
-//	}
+
+	@GetMapping("/address_book/default/{id}")
+	public String setDefaultAddress( //
+			@PathVariable("id") Integer addressId, //
+			HttpServletRequest request) //
+	{
+		Customer customer = getAuthenticatedCustomer(request);
+
+		addressService.setDefaultAddress(addressId, customer.getId());
+
+		return "redirect:/address_book";
+	}
 
 }

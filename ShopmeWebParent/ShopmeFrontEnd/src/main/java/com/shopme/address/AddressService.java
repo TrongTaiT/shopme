@@ -43,4 +43,11 @@ public class AddressService {
 		}
 	}
 
+	public void setDefaultAddress(Integer defaultAddressId, Integer customerId) {
+		if (defaultAddressId > 0) {
+			repo.setDefaultAddress(defaultAddressId);
+		}
+		repo.setNonDefaultForOthers(defaultAddressId, customerId);
+	}
+
 }

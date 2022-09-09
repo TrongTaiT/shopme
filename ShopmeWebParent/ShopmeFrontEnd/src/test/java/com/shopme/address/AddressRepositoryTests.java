@@ -90,7 +90,7 @@ public class AddressRepositoryTests {
 
 		assertThat(address).isNotNull();
 	}
-	
+
 	@Test
 	public void testUpdate() {
 		Customer customer = new Customer(40);
@@ -113,7 +113,7 @@ public class AddressRepositoryTests {
 
 		Address savedAddress = repo.save(address);
 
-		assertThat(savedAddress.getFirstName()).isEqualTo("Tèo");		
+		assertThat(savedAddress.getFirstName()).isEqualTo("Tèo");
 	}
 
 	@Test
@@ -126,6 +126,26 @@ public class AddressRepositoryTests {
 		Optional<Address> findById = repo.findById(id);
 
 		assertThat(findById).isEmpty();
+	}
+
+	@Test
+	public void testSetDefaultAddress() {
+		Integer id = 1;
+
+		repo.setDefaultAddress(id);
+
+		Address address = repo.findById(id).get();
+
+		assertThat(address.getDefaultForShipping()).isTrue();
+	}
+
+	@Test
+	public void testSetNonDefaultForOthers() {
+		Integer addressId = 6;
+		Integer customerId = 40;
+
+		repo.setDefaultAddress(addressId);
+		repo.setNonDefaultForOthers(addressId, customerId);
 	}
 
 }
