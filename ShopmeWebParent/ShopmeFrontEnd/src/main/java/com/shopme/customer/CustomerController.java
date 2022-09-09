@@ -122,15 +122,22 @@ public class CustomerController {
 			RedirectAttributes ra, HttpServletRequest request) {
 		try {
 			customerService.update(customer);
+			ra.addFlashAttribute("message", "Your account details have been saved!");
+
+			updateNameForAuthenticatedCustomer(customer, request);
+			
+			String redirectOption = request.getParameter("redirect");
+			String redirectURL = "redirect:/account_details";
+			
+			if ("address_book".equals(redirectOption)) {
+				redirectURL = "redirect:/address_book";
+			}
+			
+			return redirectURL;
 		} catch (CustomerNotFoundException e) {
 			ra.addFlashAttribute("message", e.getMessage());
 			return "redirect:/account_details";
 		}
-
-		updateNameForAuthenticatedCustomer(customer, request);
-
-		ra.addFlashAttribute("message", "Your account details have been saved!");
-		return "redirect:/account_details";
 	}
 
 	private void updateNameForAuthenticatedCustomer(Customer customer, HttpServletRequest request) {

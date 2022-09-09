@@ -1,16 +1,16 @@
-var dropDownCountry;
-var dataListState;
-var fieldState;
+let dropDownCountries;
+let dropDownStates;
 
 $(document).ready(function () {
-    dropDownCountry = $("#country");
-    dataListState = $("#listStates");
-    fieldState = $("#state");
+    dropDownCountries = $("#country");
+    dropDownStates = $("#listStates");
 
-    dropDownCountry.on("change", function () {
+    dropDownCountries.on("change", function () {
         loadStatesForCountry();
-        fieldState.val("").focus();
+        $("#state").val("").focus();
     });
+
+    loadStatesForCountry();
 });
 
 function loadStatesForCountry() {
@@ -19,11 +19,13 @@ function loadStatesForCountry() {
     url = contextPath + "settings/list_states_by_country/" + countryId;
 
     $.get(url, function (responseJSON) {
-        dataListState.empty();
+        dropDownStates.empty();
 
         $.each(responseJSON, function (index, state) {
-            $("<option>").val(state.name).text(state.name).appendTo(dataListState);
+            $("<option>").val(state.name).text(state.name).appendTo(dropDownStates);
         });
+    }).fail(function () {
+        showErrorModal("Error loading states/provinces for the selected country.");
     });
 }
 
