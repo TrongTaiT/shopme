@@ -6,7 +6,7 @@
         <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
             <input type="submit">
         </form>
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <nav class="navbar navbar-expand-xl bg-dark navbar-dark">
             <a th:href="@{/}" class="navbar-brand">
                 <img th:src="@{/images/ShopmeAdminSmall.png}" alt="">
             </a>
@@ -105,7 +105,7 @@
                             <a class="dropdown-item" th:href="@{/settings#states}">States</a>
                             <a class="dropdown-item" th:href="@{/settings#mailServer}">Mail Server</a>
                             <a class="dropdown-item" th:href="@{/settings#mailTemplates}">Mail Templates</a>
-                            <a class="dropdown-item" th:href="@{/settings#payments}">Payment</a>
+                            <a class="dropdown-item" th:href="@{/settings#payment}">Payment</a>
                         </div>
                     </li>
                     <li>

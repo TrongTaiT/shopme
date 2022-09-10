@@ -108,7 +108,7 @@
 
         <div th:replace="modal_fragments :: confirm_modal"></div>
 
-        <div class="modal fade" id="detailModel">
+        <div class="modal fade" id="detailModal">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
 
@@ -130,7 +130,7 @@
             $(".link-detail").click(function (e) {
                 e.preventDefault();
                 linkDetailURL = $(this).attr("href");
-                $("#detailModel").modal("show").find(".modal-content").load(linkDetailURL);
+                $("#detailModal").modal("show").find(".modal-content").load(linkDetailURL);
             });
         });
     </script>

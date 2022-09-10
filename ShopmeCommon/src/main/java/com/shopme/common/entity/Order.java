@@ -95,6 +95,17 @@ public class Order {
 				+ ", customer=" + customer + "]";
 	}
 
+	public String getDestination() {
+		String destination = "";
+		if (!city.isBlank())
+			destination += city;
+
+		if (!state.isBlank())
+			destination += ", " + state;
+
+		return destination + ", " + country;
+	}
+
 	// getters && setters
 	public Integer getId() {
 		return id;
