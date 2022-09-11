@@ -10,7 +10,7 @@
         <form th:action="@{/account/update}" method="post" class="mx-auto" style="max-width: 700px;" th:object="${user}"
             enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
-            <input type="hidden" name="redirect" th:value="*{param.redirect}">
+
             <div class="text-center">
                 <h2>Your Account Details</h2>
             </div>
