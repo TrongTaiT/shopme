@@ -22,8 +22,12 @@
                         <th th:replace="fragments :: column_link('customer', 'Customer', 'none')"></th>
                         <th th:replace="fragments :: column_link('total', 'Total', 'none')"></th>
                         <th th:replace="fragments :: column_link('orderTime', 'Order Time', 'none')"></th>
-                        <th th:replace="fragments :: column_link('destination', 'Destination', 'none')"></th>
-                        <th th:replace="fragments :: column_link('paymentMethod', 'Payment Method', 'none')"></th>
+                        <th class="hideable-column">
+                        <th th:replace="fragments :: column_link('destination', 'Destination', 'tag')"></th>
+                        </th>
+                        <th class="hideable-column">
+                        <th th:replace="fragments :: column_link('paymentMethod', 'Payment Method', 'tag')"></th>
+                        </th>
                         <th th:replace="fragments :: column_link('status', 'Status', 'none')"></th>
                         <th></th>
                     </tr>
@@ -42,8 +46,8 @@
                         <td>
                             <div th:replace="fragments :: format_time(${order.orderTime})"></div>
                         </td>
-                        <td>[[${order.destination}]]</td>
-                        <td>[[${order.paymentMethod}]]</td>
+                        <td class="hideable-column">[[${order.destination}]]</td>
+                        <td class="hideable-column">[[${order.paymentMethod}]]</td>
                         <td>[[${order.status}]]</td>
 
                         <td>
@@ -65,10 +69,28 @@
 
         <div class="less-details">
             <div th:each="order : ${listOrders}" class="row my-3">
-                <div class="col-4">
+                <div class="col-3">
+                    [[${order.id}]]
                 </div>
-                <div class="col-8">
-                    <div class="mt-2">
+                <div class="col-9">
+                    <div>
+                        <a class="link-detail" th:href="@{'/customers/detail/' + ${order.customer.id}}">
+                            [[${order.customer.fullname}]]
+                        </a>
+                        <span>, [[${order.country}]]</span>
+                    </div>
+                    <div>
+                        <div th:replace="fragments :: format_time(${order.orderTime})"></div>
+                        <span> - [[${order.status}]]</span>
+                    </div>
+                    <div>
+                        <div th:replace="fragments :: format_currency(${order.total})"></div>
+                        <span> - [[${order.paymentMethod}]]</span>
+                    </div>
+                    <div>
+                        <a th:href="@{'/orders/detail/' + ${order.id}}"
+                            class="link-detail fas fa-file-alt fa-2x icon-green" title="View detail of this order"></a>
+                        &nbsp;
                         <div th:replace="fragments :: edit('order', '/orders/edit/' + ${order.id})">
                         </div>
                         &nbsp;
