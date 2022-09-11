@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title">Customer Details</h4>
-    <button type="button" class="close text-danger fas fa-2x fa-times-circle mr-3" data-dismiss="modal"></button>
+    <button type="button" class="close text-danger fas fa-2x fa-times-circle" data-dismiss="modal"></button>
 </div>
 
 <div class="modal-content">
@@ -51,7 +51,7 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Created Time:</label>
                 <div class="col-sm-10">
-                    <span>[[${#dates.format(customer.createdTime, 'yyyy-MM-dd HH:mm:ss')}]]</span>
+                    <div th:replace="fragments :: format_time(${customer.createdTime})"></div>
                 </div>
             </div>
         </div>

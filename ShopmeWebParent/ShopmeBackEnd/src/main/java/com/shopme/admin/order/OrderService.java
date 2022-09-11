@@ -1,5 +1,7 @@
 package com.shopme.admin.order;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.common.entity.Order;
+import com.shopme.common.exception.OrderNotFoundException;
 
 @Service
 public class OrderService {
@@ -41,8 +44,16 @@ public class OrderService {
 		} else {
 			page = repo.findAll(pageable);
 		}
-		
+
 		helper.updateModelAttributes(pageNum, page);
+	}
+
+	public Order get(Integer orderId) throws OrderNotFoundException {
+		try {
+			return repo.findById(orderId).get();
+		} catch (NoSuchElementException e) {
+			throw new OrderNotFoundException("Could not find any order withd ID " + orderId);
+		}
 	}
 
 }

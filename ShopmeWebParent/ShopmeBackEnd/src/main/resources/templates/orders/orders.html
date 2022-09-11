@@ -32,7 +32,7 @@
                     <tr th:each="order : ${listOrders}">
                         <td>[[${order.id}]]</td>
                         <td>
-                            <a class="linkCustomerDetail" th:href="@{'/customers/detail/' + ${order.customer.id}}">
+                            <a class="link-detail" th:href="@{'/customers/detail/' + ${order.customer.id}}">
                                 [[${order.customer.fullname}]]
                             </a>
                         </td>
@@ -83,13 +83,7 @@
         <div th:replace="fragments :: pagination('orders')"></div>
 
         <div th:replace="modal_fragments :: confirm_modal"></div>
-
-        <div class="modal fade" id="detailModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                </div>
-            </div>
-        </div>
+        <div th:replace="modal_fragments :: detail_modal"></div>
 
         <div th:replace="fragments :: footer"></div>
     </div>
@@ -103,16 +97,12 @@
                 showDeleteConfirmModal($(this), 'order');
             });
 
-            handleLinkViewCustomerDetails();
-        });
-
-        function handleLinkViewCustomerDetails() {
-            $(".linkCustomerDetail").on("click", function (e) {
+            $(".link-detail").click(function (e) {
                 e.preventDefault();
                 linkDetailURL = $(this).attr("href");
                 $("#detailModal").modal("show").find(".modal-content").load(linkDetailURL);
             });
-        }
+        });
     </script>
 </body>
 
