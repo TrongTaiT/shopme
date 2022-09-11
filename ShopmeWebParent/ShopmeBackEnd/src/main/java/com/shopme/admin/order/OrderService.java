@@ -52,8 +52,18 @@ public class OrderService {
 		try {
 			return repo.findById(orderId).get();
 		} catch (NoSuchElementException e) {
-			throw new OrderNotFoundException("Could not find any order withd ID " + orderId);
+			throw new OrderNotFoundException("Could not find any order with ID " + orderId);
 		}
+	}
+
+	public void delete(Integer orderId) throws OrderNotFoundException {
+		Long countById = repo.countById(orderId);
+
+		if (countById == null || countById == 0) {
+			throw new OrderNotFoundException("Could not find any order with ID " + orderId);
+		}
+
+		repo.deleteById(orderId);
 	}
 
 }

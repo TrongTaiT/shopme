@@ -73,4 +73,20 @@ public class OrderController {
 		}
 	}
 
+	@GetMapping("/orders/delete/{id}")
+	public String viewOrderDetails( //
+			@PathVariable("id") Integer orderId, //
+			RedirectAttributes ra) //
+	{
+		try {
+			orderService.delete(orderId);
+			
+			ra.addFlashAttribute("message", "The order with ID " + orderId + " has been deleted successfully.");
+		} catch (OrderNotFoundException e) {
+			ra.addFlashAttribute("message", e.getMessage());			
+		}
+		
+		return defaultRedirectURL;
+	}
+
 }
