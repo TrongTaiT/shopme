@@ -29,8 +29,11 @@
 									<span class="text-danger">[Default]</span>
 								</th:block>
 								<th:block th:unless="${usePrimaryAddressAsDefault}">
-									<a th:href="@{/address_book/default/0}">
-										[Set as default]</a>
+									<a th:unless="${param.redirect}" th:href="@{/address_book/default/0}">[Set as
+										default]</a>
+									<a th:if="${param.redirect}" th:with="redirectParam=${param.redirect}"
+										th:href="@{'/address_book/default/0?redirect=' + ${redirectParam}}">[Set as
+										default]</a>
 								</th:block>
 							</span>
 							<span class="float-right">
@@ -57,8 +60,10 @@
 										<span class="text-danger">[Default]</span>
 									</th:block>
 									<th:block th:unless="${address.defaultForShipping}">
-										<a th:href="@{'/address_book/default/' + ${address.id}}">
-											[Set as default]</a>
+										<a th:unless="${param.redirect}"
+											th:href="@{'/address_book/default/' + ${address.id}}">[Set as default]</a>
+										<a th:if="${param.redirect}" th:with="redirectParam=${param.redirect}"
+											th:href="@{'/address_book/default/' + ${address.id} + '?redirect=' + ${redirectParam}}">[Set as default]</a>
 									</th:block>
 								</span>
 								<span class="float-right">
