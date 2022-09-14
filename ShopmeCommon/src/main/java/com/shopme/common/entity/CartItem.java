@@ -1,11 +1,10 @@
 package com.shopme.common.entity;
 
-import java.beans.Transient;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.shopme.common.entity.product.Product;
 
@@ -24,6 +23,9 @@ public class CartItem extends IdBasedEntity {
 	private int quantity;
 
 	// transient fields
+	@Transient
+	private float shippingCost;
+
 	@Transient
 	public float getSubtotal() {
 		return product.getDiscountPrice() * quantity;
@@ -63,6 +65,15 @@ public class CartItem extends IdBasedEntity {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	@Transient
+	public float getShippingCost() {
+		return shippingCost;
+	}
+
+	public void setShippingCost(float shippingCost) {
+		this.shippingCost = shippingCost;
 	}
 
 }
