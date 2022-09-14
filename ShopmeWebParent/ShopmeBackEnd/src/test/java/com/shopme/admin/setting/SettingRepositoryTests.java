@@ -56,9 +56,32 @@ public class SettingRepositoryTests {
 	}
 
 	@Test
+	public void testCreateNewMailTemplateSettings() {
+		Setting orderConfirmationSubject = new Setting("ORDER_CONFIRMATION_SUBJECT", "",
+				SettingCategory.MAIL_TEMPLATES);
+		Setting orderConfirmationContent = new Setting("ORDER_CONFIRMATION_CONTENT", "",
+				SettingCategory.MAIL_TEMPLATES);
+
+		Iterable<Setting> iterable = repo.saveAll(List.of(orderConfirmationContent, orderConfirmationSubject));
+
+		assertThat(iterable).size().isGreaterThan(0);
+	}
+
+	@Test
+	public void testCreatePaymentSettings() {
+		Setting baseURL = new Setting("PAYPAL_API_BASE_URL", "", SettingCategory.PAYMENT);
+		Setting clientId = new Setting("PAYPAL_API_CLIENT_ID", "", SettingCategory.PAYMENT);
+		Setting clientSecret = new Setting("PAYPAL_API_CLIENT_SECRET", "", SettingCategory.PAYMENT);
+
+		Iterable<Setting> iterable = repo.saveAll(List.of(baseURL, clientId, clientSecret));
+
+		assertThat(iterable).size().isGreaterThan(0);
+	}
+
+	@Test
 	public void testListSettingsByCategory() {
 		List<Setting> settings = repo.findByCategory(SettingCategory.GENERAL);
-		
+
 		settings.forEach(System.out::println);
 	}
 
