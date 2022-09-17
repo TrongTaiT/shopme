@@ -62,13 +62,21 @@ public class ProductController {
 	}
 
 	@GetMapping("/products/new")
-	public String newProduct(Model model) {
+	public String newProduct(Model model, @AuthenticationPrincipal ShopmeUserDetails loggedUser) {
 		List<Brand> listBrands = brandService.listAll();
 
 		Product product = new Product();
 		product.setEnabled(true);
 		product.setInStock(true);
 
+		boolean isReadOnlyForSalesperson = false;
+		if (!loggedUser.hasRole("Admin") && !loggedUser.hasRole("Editor") //
+				&& loggedUser.hasRole("Salesperson")) //
+		{
+			isReadOnlyForSalesperson = true;
+		}
+
+		model.addAttribute("isReadOnlyForSalesperson", isReadOnlyForSalesperson);
 		model.addAttribute("listBrands", listBrands);
 		model.addAttribute("product", product);
 		model.addAttribute("pageTitle", "Create New Product");
