@@ -65,6 +65,7 @@ public class OrderController {
 
 			loadCurrencySetting(request);
 			model.addAttribute("order", order);
+			System.out.println("ORder: " + order.getDeliverDate());
 
 			return "orders/order_detail_modal";
 		} catch (OrderNotFoundException e) {

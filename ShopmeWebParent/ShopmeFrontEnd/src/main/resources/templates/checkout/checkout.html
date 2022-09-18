@@ -41,11 +41,15 @@
 
                     <div class="card-body">
                         <div th:if="${checkoutInfo.codSupported}">
-                            <p>
-                                <input type="radio"> Cash on Deliver (COD)
-                                &nbsp;
-                                <button class="btn btn-primary">Place Order with COD</button>
-                            </p>
+                            <form th:action="@{/place_order}" method="post">
+                                <p>
+                                    <input type="radio" name="paymentMethod" id="radioCOD" value="COD">
+                                    <label for="radioCOD">Cash on Deliver (COD)</label>
+                                    &nbsp;
+                                    <button class="btn btn-primary d-none" id="buttonSubmit" type="submit">Place Order
+                                        with COD</button>
+                                </p>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -75,7 +79,10 @@
                                         <td>
                                             <div th:replace="fragments :: format_currency(${item.subtotal})"></div>
                                         </td>
-                                    </tr><td colspan="3"><hr></td>
+                                    </tr>
+                                    <td colspan="3">
+                                        <hr>
+                                    </td>
                                 </th:block>
                             </table>
                         </div>
@@ -95,7 +102,10 @@
                         <div class="row mt-2">
                             <div class="col">Payment Total:</div>
                             <div class="col">
-                                <b><div th:replace="fragments :: format_currency(${checkoutInfo.shippingCostTotal})"></div></b>
+                                <b>
+                                    <div th:replace="fragments :: format_currency(${checkoutInfo.paymentTotal})">
+                                    </div>
+                                </b>
                             </div>
                         </div>
                     </div>
@@ -106,6 +116,17 @@
     </div>
 
     <div th:replace="navigation :: footer_menu"></div>
+    <script>
+        contextPath = "[[@{/}]]";
+        var csrfHeaderName = "[[${_csrf.headerName}]]";
+        var csrfValue = "[[${_csrf.token}]]";
+
+        $(document).ready(function () {
+            $("#radioCOD").on("click", function () {
+                $("#buttonSubmit").removeClass("d-none");
+            });
+        })
+    </script>
 </body>
 
 </html>

@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.shopme.common.entity.AbstractAddress;
+import com.shopme.common.entity.Address;
 import com.shopme.common.entity.Customer;
 
 @Entity
@@ -58,6 +59,18 @@ public class Order extends AbstractAddress {
 		setCountry(customer.getCountry().getName());
 		setPostalCode(customer.getPostalCode());
 		setState(customer.getState());
+	}
+
+	public void copyShippingAddress(Address address) {
+		setFirstName(address.getFirstName());
+		setLastName(address.getLastName());
+		setPhoneNumber(address.getPhoneNumber());
+		setAddressLine1(address.getAddressLine1());
+		setAddressLine2(address.getAddressLine2());
+		setCity(address.getCity());
+		setCountry(address.getCountry().getName());
+		setPostalCode(address.getPostalCode());
+		setState(address.getState());
 	}
 
 	// inherited
