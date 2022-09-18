@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.shopme.common.entity.AbstractAddress;
 import com.shopme.common.entity.Address;
@@ -71,6 +72,42 @@ public class Order extends AbstractAddress {
 		setCountry(address.getCountry().getName());
 		setPostalCode(address.getPostalCode());
 		setState(address.getState());
+	}
+
+	@Transient
+	public String getShippingAddress() {
+		String address = firstName;
+		if (lastName != null && !lastName.isEmpty()) {
+			address += " " + lastName;
+		}
+
+		if (!addressLine1.isBlank()) {
+			address += " || " + addressLine1;
+		}
+
+		if (addressLine2 != null && !addressLine2.isBlank()) {
+			address += ", " + addressLine2;
+		}
+
+		if (!city.isBlank()) {
+			address += ", " + city;
+		}
+
+		if (!state.isBlank()) {
+			address += ", " + state;
+		}
+
+		address += ", " + country;
+
+		if (!postalCode.isBlank()) {
+			address += ". Postal Code: " + postalCode;
+		}
+
+		if (!phoneNumber.isBlank()) {
+			address += ". Phone Number: " + phoneNumber;
+		}
+
+		return address;
 	}
 
 	// inherited
